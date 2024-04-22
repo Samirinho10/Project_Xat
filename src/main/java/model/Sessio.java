@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package model;
 
 import dades.Connexio;
@@ -13,15 +10,9 @@ import java.awt.RenderingHints;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 
-/**
- *
- * @author Samir
- */
+
 public class Sessio extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Principal
-     */
     public Sessio() {
         initComponents();
     }
