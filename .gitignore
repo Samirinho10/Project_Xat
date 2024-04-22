@@ -1,0 +1,18 @@
+# Ignorar archivos generados por NetBeans
+/nbproject/
+/build/
+/dist/
+/target/
+
+# Ignorar archivos de configuración de NetBeans
+/nb-configuration.xml
+/build.xml
+
+# Ignorar archivos de respaldo generados por NetBeans
+*~
+
+# Ignorar archivos de registro de NetBeans
+*.log
+
+# Ignorar archivos de respaldo de NetBeans
+*.backup
