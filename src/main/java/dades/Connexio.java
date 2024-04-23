@@ -21,7 +21,6 @@ public class Connexio {
             MongoDatabase database = mongoClient.getDatabase("xat");
             System.out.println("Conexión a MongoDB establecida correctamente.");
 
-            // Mostrar todas las colecciones en la base de datos
             mostrarColecciones(database);
         } catch (Exception e) {
             System.err.println("Error al conectar a MongoDB: " + e);
@@ -33,37 +32,50 @@ public class Connexio {
 
     public static void inserirUsuari(String usuari, String contrasenya) {
         try {
+            if (usuaris.find(new Document("_id", usuari)).first() != null) {
+                System.out.println("L'usuari '" + usuari + "' ya existe.");
+                return;
+            }
+
             Document usuariDoc = new Document("_id", usuari)
-                    .append("usuari", usuari)
                     .append("contrasenya", contrasenya);
 
             usuaris.insertOne(usuariDoc);
 
-            System.out.println("Usuario '" + usuari + "' insertado correctamente.");
+            System.out.println("Usuari '" + usuari + "' inserit correctament.");
         } catch (Exception e) {
-            System.err.println("Error al insertar usuario '" + usuari + "': " + e);
+            System.err.println("Error al inserir usuari '" + usuari + "': " + e);
         }
-
     }
 
     public static void mostrarColecciones(MongoDatabase database) {
         try {
-            // Mostrar todas las colecciones en la base de datos
             MongoIterable<String> collectionNames = database.listCollectionNames();
-            System.out.println("Colecciones disponibles:");
+            System.out.println("Collections disponibles:");
             for (String name : collectionNames) {
                 System.out.println("- " + name);
             }
-        } catch (Exception e) {
+        } catch (Exception e){ 
             System.err.println("Error al mostrar colecciones: " + e);
         }
     }
 
-    public static boolean verificarCredenciales(String usuari, String contrasenya) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+public static boolean verificarCreedencials(String usuari, String contrasenya) {
+    try {
+        Document usuariDoc = usuaris.find(new Document("_id", usuari)).first();
+        
+        if (usuariDoc != null && usuariDoc.getString("contrasenya").equals(contrasenya)) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (Exception e) {
+        System.err.println("Error al verificar creedencials: " + e);
+        return false;
     }
+}
 
     public static void establirConnexio() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
