@@ -49,11 +49,6 @@ public class Sessio extends javax.swing.JFrame {
         usuari.setCaretColor(new java.awt.Color(102, 102, 255));
         usuari.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         usuari.setMargin(new Insets(5, 20, 5, 5));
-        usuari.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usuariActionPerformed(evt);
-            }
-        });
 
         jLabel4.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jLabel4.setText("Contrasenya");
@@ -65,11 +60,6 @@ public class Sessio extends javax.swing.JFrame {
         contrasenya.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         contrasenya.setBorder(null);
         contrasenya.setCaretColor(new java.awt.Color(102, 102, 255));
-        contrasenya.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                contrasenyaActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -219,14 +209,6 @@ public class Sessio extends javax.swing.JFrame {
         return Connexio.verificarCreedencials(usuari, contrasenya);
     }
 
-
-    private void usuariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariActionPerformed
-        usuari.setMargin(new Insets(5, 20, 5, 5));
-    }//GEN-LAST:event_usuariActionPerformed
-
-    private void contrasenyaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contrasenyaActionPerformed
-
-    }//GEN-LAST:event_contrasenyaActionPerformed
 
     /**
      * @param args the command line arguments
