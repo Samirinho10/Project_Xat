@@ -197,7 +197,7 @@ public class Sessio extends javax.swing.JFrame {
             return insets;
         }
     }
-    
+
     private void accesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesActionPerformed
         String usuari = this.usuari.getText();
         String contrasenya = new String(this.contrasenya.getPassword());
@@ -222,6 +222,8 @@ public class Sessio extends javax.swing.JFrame {
 
     private void usuariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariActionPerformed
         usuari.setMargin(new Insets(5, 20, 5, 5));
+
+
     }//GEN-LAST:event_usuariActionPerformed
 
     private void contrasenyaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contrasenyaActionPerformed

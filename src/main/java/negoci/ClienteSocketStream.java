@@ -6,6 +6,10 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+import dades.Connexio;
+
+import classes.Usuari;
+
 public class ClienteSocketStream {
 	
     public static void main(String[] args){

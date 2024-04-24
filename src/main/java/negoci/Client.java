@@ -15,10 +15,14 @@ public class Client {
         String host = "localhost";
         int port = 22222;
         
+        
+        
         // Connectem a socket
         Socket socol = new Socket (host,port);
         DataOutputStream out = new DataOutputStream(socol.getOutputStream());
         DataInputStream in = new DataInputStream(socol.getInputStream());
+        
+        String client = this.usuari.getText();
         
         // a. Generar doble clau		    
 	KeyPairGenerator generadorRSA = KeyPairGenerator.getInstance("RSA");
