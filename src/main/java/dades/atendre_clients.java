@@ -11,11 +11,9 @@ import java.util.logging.Logger;
 public class atendre_clients extends Thread {
 
     private Socket newSocket = null;
-    public int comptador = 1;
 
-    public atendre_clients (Socket cs, int comptador) {
+    public atendre_clients (Socket cs) {
         newSocket = cs;
-        this.comptador = comptador;
     }
     
     public void run() {
@@ -27,10 +25,11 @@ public class atendre_clients extends Thread {
             InputStream is = newSocket.getInputStream();
             OutputStream os = newSocket.getOutputStream();
 
-            byte[] usuariConnectat = new byte[50];	
-            is.read(usuariConnectat);
+            byte[] missatge_credencials = new byte[50];	
+            is.read(missatge_credencials);
+            String credencials = new String(missatge_credencials);
 
-            System.out.println("S'ha connectat l'usuari " + new String(usuariConnectat));
+            System.out.println("S'ha connectat l'usuari " + credencials);
 
         } catch (IOException ex) {
             ex.printStackTrace();

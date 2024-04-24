@@ -10,11 +10,11 @@ import javax.swing.border.AbstractBorder;
 import model.Usuari;
 
 public class Sessio extends javax.swing.JFrame {
-
+    
     public Sessio() {
         initComponents();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -187,6 +187,15 @@ public class Sessio extends javax.swing.JFrame {
             return insets;
         }
     }
+    
+    public Usuari obtenirUsuariContrasenya() {
+        String user = new String(this.usuari.getText());
+        String password = new String(this.contrasenya.getPassword());
+        
+        Usuari usuariLogejat = new Usuari (user, password);
+        
+        return usuariLogejat;
+    }
 
     private void usuariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariActionPerformed
 
@@ -197,14 +206,14 @@ public class Sessio extends javax.swing.JFrame {
     }//GEN-LAST:event_contrasenyaActionPerformed
 
     private void accesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesActionPerformed
-        String usuari = new String(this.usuari.getText());
-        String contrasenya = new String(this.contrasenya.getPassword());
+        String user = new String(this.usuari.getText());
+        String password = new String(this.contrasenya.getPassword());
 
-        Usuari u = new Usuari (usuari, contrasenya);
+        Usuari u = new Usuari (user, password);
         
         if (Connexio.verificarCreedencials(u)) {
-            System.out.println("S'ha iniciat sessió amb l'usuari '" + u.getUsuari());
-
+            System.out.println("S'ha iniciat sessió amb l'usuari '" + u.getUsuari() + "'");
+            
             Principal principalFrame = new Principal();
             principalFrame.setVisible(true);
             this.dispose();
