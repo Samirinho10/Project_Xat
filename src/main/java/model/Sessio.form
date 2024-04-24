@@ -169,9 +169,6 @@
                   <Color id="Text Cursor"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usuariActionPerformed"/>
-              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="usuari.setMargin(new Insets(5, 20, 5, 5));"/>
               </AuxValues>
@@ -205,9 +202,6 @@
                   <Color blue="ff" green="66" red="66" type="rgb"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="contrasenyaActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
