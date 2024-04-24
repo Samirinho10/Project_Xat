@@ -1,4 +1,4 @@
-package negoci;
+package dades;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,8 +7,6 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import dades.Connexio;
-
-import classes.Usuari;
 
 public class ClienteSocketStream {
 	

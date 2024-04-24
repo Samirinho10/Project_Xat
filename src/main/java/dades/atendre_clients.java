@@ -1,5 +1,5 @@
 
-package negoci;
+package dades;
 
 import java.io.IOException;
 import java.io.InputStream;

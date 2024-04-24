@@ -1,5 +1,5 @@
 
-package negoci;
+package dades;
 
 import dades.Connexio;
 

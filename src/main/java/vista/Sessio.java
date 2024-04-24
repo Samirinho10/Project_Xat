@@ -1,4 +1,4 @@
-package model;
+package vista;
 
 import dades.Connexio;
 import java.awt.Component;
@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import javax.swing.border.AbstractBorder;
-import javax.swing.border.Border;
+import model.Usuari;
 
 public class Sessio extends javax.swing.JFrame {
 
@@ -188,37 +188,32 @@ public class Sessio extends javax.swing.JFrame {
         }
     }
 
-    private void accesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesActionPerformed
-        String usuari = this.usuari.getText();
-        String contrasenya = new String(this.contrasenya.getPassword());
-
-        if (Connexio.verificarCreedencials(usuari, contrasenya)) {
-            System.out.println("S'ha iniciat sessió amb '" + usuari + "'!");
-
-            Principal principalFrame = new Principal();
-            principalFrame.setVisible(true);
-            this.dispose();
-        } else {
-            Connexio.inserirUsuari(usuari, contrasenya);
-            System.out.println("Nou usuari '" + usuari + "' creat amb èxit!");
-        }
-    }//GEN-LAST:event_accesActionPerformed
-
-    private boolean verificarCreedencials(String usuari, String contrasenya) {
-        Connexio.establirConnexio();
-        return Connexio.verificarCreedencials(usuari, contrasenya);
-    }
-
-
     private void usuariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariActionPerformed
-
-
 
     }//GEN-LAST:event_usuariActionPerformed
 
     private void contrasenyaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contrasenyaActionPerformed
 
     }//GEN-LAST:event_contrasenyaActionPerformed
+
+    private void accesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesActionPerformed
+        String usuari = new String(this.usuari.getText());
+        String contrasenya = new String(this.contrasenya.getPassword());
+
+        Usuari u = new Usuari (usuari, contrasenya);
+        
+        if (Connexio.verificarCreedencials(u)) {
+            System.out.println("S'ha iniciat sessió amb l'usuari '" + u.getUsuari());
+
+            Principal principalFrame = new Principal();
+            principalFrame.setVisible(true);
+            this.dispose();
+        } else {
+            Connexio.inserirUsuari(u);
+            System.out.println("Nou usuari '" + u.getUsuari() + "' creat amb èxit!");
+        }
+
+    }//GEN-LAST:event_accesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,6 +245,7 @@ public class Sessio extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 new Sessio().setVisible(true);
             }

@@ -1,5 +1,5 @@
 
-package model;
+package vista;
 
 import componentsExterns.*;
 import javax.swing.BoxLayout;

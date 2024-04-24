@@ -1,5 +1,5 @@
 
-package negoci;
+package dades;
 
 import java.io.*;
 import java.net.*;
@@ -22,7 +22,7 @@ public class Client {
         DataOutputStream out = new DataOutputStream(socol.getOutputStream());
         DataInputStream in = new DataInputStream(socol.getInputStream());
         
-        String client = this.usuari.getText();
+        //String client = this.usuari.getText();
         
         // a. Generar doble clau		    
 	KeyPairGenerator generadorRSA = KeyPairGenerator.getInstance("RSA");
