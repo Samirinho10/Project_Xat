@@ -132,7 +132,7 @@
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Component id="txtUsuari" max="32767" attributes="0"/>
-                  <Component id="contrasenya" alignment="1" max="32767" attributes="0"/>
+                  <Component id="txtContrasenya" alignment="1" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -145,7 +145,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="contrasenya" linkSize="3" min="-2" pref="39" max="-2" attributes="0"/>
+                      <Component id="txtContrasenya" linkSize="3" min="-2" pref="39" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -171,6 +171,7 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="txtUsuari.setMargin(new Insets(5, 20, 5, 5));"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
@@ -190,7 +191,7 @@
                 <Property name="text" type="java.lang.String" value="Usuari"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JPasswordField" name="contrasenya">
+            <Component class="javax.swing.JPasswordField" name="txtContrasenya">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Verdana" size="14" style="0"/>
@@ -202,6 +203,9 @@
                   <Color blue="ff" green="66" red="66" type="rgb"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

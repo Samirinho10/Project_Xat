@@ -184,14 +184,6 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BtnXatActionPerformed
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Principal().setVisible(true);
-            }
-        });
-    }
-
     private void init() {
         //editar scroll bar
         sp.setVerticalScrollBar(new ScrollBar());

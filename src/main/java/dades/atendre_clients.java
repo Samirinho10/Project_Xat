@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,7 +30,6 @@ public class atendre_clients extends Thread {
             ex.printStackTrace();
         } catch (InterruptedException ex) {
             Logger.getLogger(atendre_clients.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }   
     }
 }

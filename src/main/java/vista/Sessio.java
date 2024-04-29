@@ -6,15 +6,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
+import javax.swing.JOptionPane;
 import javax.swing.border.AbstractBorder;
 import model.Usuari;
 
 public class Sessio extends javax.swing.JFrame {
-    
+
     public Sessio() {
         initComponents();
     }
@@ -29,7 +26,7 @@ public class Sessio extends javax.swing.JFrame {
         txtUsuari = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        contrasenya = new javax.swing.JPasswordField();
+        txtContrasenya = new javax.swing.JPasswordField();
         acces = new javax.swing.JButton();
         imatgeFons = new javax.swing.JLabel();
 
@@ -61,9 +58,9 @@ public class Sessio extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Usuari");
 
-        contrasenya.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        contrasenya.setBorder(null);
-        contrasenya.setCaretColor(new java.awt.Color(102, 102, 255));
+        txtContrasenya.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        txtContrasenya.setBorder(null);
+        txtContrasenya.setCaretColor(new java.awt.Color(102, 102, 255));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -76,7 +73,7 @@ public class Sessio extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(txtUsuari)
-            .addComponent(contrasenya, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(txtContrasenya, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel2, jLabel4});
@@ -91,11 +88,11 @@ public class Sessio extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(contrasenya, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtContrasenya, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {contrasenya, txtUsuari});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtContrasenya, txtUsuari});
 
         acces.setBackground(new java.awt.Color(102, 102, 255));
         acces.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
@@ -192,16 +189,21 @@ public class Sessio extends javax.swing.JFrame {
         }
     }
     
-    public Usuari obtenirUsuariContrasenya() {
-        String user=this.txtUsuari.getText();
+    public boolean iniciSessio() {
+        String usuari = txtUsuari.getText();
+        String contrasenya = new String(txtContrasenya.getPassword());
         
-        System.out.println("aqui estic--->"+user);
-     
-        String password = new String(this.contrasenya.getPassword());
-        
-        Usuari usuariLogejat = new Usuari (user, password);
-        
-        return usuariLogejat;
+        Usuari usuariConnectat = new Usuari(usuari, contrasenya);
+
+        if (Connexio.verificarCreedencials(usuariConnectat)) {
+            Principal principalFrame = new Principal();
+            principalFrame.setVisible(true);
+            this.dispose();
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuari i/o contrasenya incorrectes.");
+            return false;
+        }
     }
 
     private void usuariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariActionPerformed
@@ -213,63 +215,18 @@ public class Sessio extends javax.swing.JFrame {
     }//GEN-LAST:event_contrasenyaActionPerformed
 
     private void accesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesActionPerformed
-        String user = new String(this.txtUsuari.getText());
-        String password = new String(this.contrasenya.getPassword());
-
-        Usuari u = new Usuari (user, password);
-        
-        if (Connexio.verificarCreedencials(u)) {
-            System.out.println("S'ha iniciat sessió amb l'usuari '" + u.getUsuari() + "'");
-            
-            Principal principalFrame = new Principal();
-            principalFrame.setVisible(true);
-            this.dispose();
-        } else {
-            Connexio.inserirUsuari(u);
-            System.out.println("Nou usuari '" + u.getUsuari() + "' creat amb èxit!");
-        }
-
+        iniciSessio();
     }//GEN-LAST:event_accesActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        try{
-            //Creant Socket client per connectar-nos al servidor
-            Socket cs = new Socket("localhost", 5050);
-		
-            //Obtenim els fluxos d'entrada i sortida del socket
-            InputStream is = cs.getInputStream();
-            OutputStream os = cs.getOutputStream();
-			
-            //Obrim pantalla login
-            Sessio sessioFrame = new Sessio();
-            //sessioFrame.setModal;
-            sessioFrame.setVisible(true);
-            
-            //Obtenim les credencials i les enviem al servidor
-            Usuari usuari = sessioFrame.obtenirUsuariContrasenya();
-            System.out.println("usuari: " + usuari.getUsuari());
-           
-            
-            //Tanquem el socket
-            cs.close();
-			
-    	} catch(IOException e){
-            e.printStackTrace();
-	}
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Login;
     private javax.swing.JButton acces;
-    private javax.swing.JPasswordField contrasenya;
     private javax.swing.JLabel imatgeFons;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField txtUsuari;
+    public javax.swing.JPasswordField txtContrasenya;
+    public javax.swing.JTextField txtUsuari;
     // End of variables declaration//GEN-END:variables
 }
