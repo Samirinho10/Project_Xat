@@ -25,12 +25,6 @@ public class atendre_clients extends Thread {
             InputStream is = newSocket.getInputStream();
             OutputStream os = newSocket.getOutputStream();
 
-            byte[] missatge_credencials = new byte[50];	
-            is.read(missatge_credencials);
-            String credencials = new String(missatge_credencials);
-
-            System.out.println("S'ha connectat l'usuari " + credencials);
-
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (InterruptedException ex) {

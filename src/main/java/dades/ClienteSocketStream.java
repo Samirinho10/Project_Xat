@@ -25,15 +25,12 @@ public class ClienteSocketStream {
 			
             //Obrim pantalla login
             Sessio sessioFrame = new Sessio();
-            sessioFrame.setVisible(true);
+            //sessioFrame.setModal;
+            //sessioFrame.setVisible(true);
             
             //Obtenim les credencials i les enviem al servidor
             Usuari usuari = sessioFrame.obtenirUsuariContrasenya();
             System.out.println("usuari: " + usuari.getUsuari());
-            
-//            String credencials = usuari + ":" + contrasenya + "\n";
-//            System.out.println(credencials + "holajodsja");
-//            os.write(credencials.getBytes());
            
             
             //Tanquem el socket

@@ -6,6 +6,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import javax.swing.border.AbstractBorder;
 import model.Usuari;
 
@@ -22,7 +26,7 @@ public class Sessio extends javax.swing.JFrame {
         Login = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        usuari = new javax.swing.JTextField();
+        txtUsuari = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         contrasenya = new javax.swing.JPasswordField();
@@ -42,13 +46,13 @@ public class Sessio extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Inicia Sessió");
 
-        usuari.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        usuari.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        usuari.setToolTipText("Introdueix l'usuari");
-        usuari.setBorder(null);
-        usuari.setCaretColor(new java.awt.Color(102, 102, 255));
-        usuari.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        usuari.setMargin(new Insets(5, 20, 5, 5));
+        txtUsuari.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        txtUsuari.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtUsuari.setToolTipText("Introdueix l'usuari");
+        txtUsuari.setBorder(null);
+        txtUsuari.setCaretColor(new java.awt.Color(102, 102, 255));
+        txtUsuari.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtUsuari.setMargin(new Insets(5, 20, 5, 5));
 
         jLabel4.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jLabel4.setText("Contrasenya");
@@ -71,7 +75,7 @@ public class Sessio extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(usuari)
+            .addComponent(txtUsuari)
             .addComponent(contrasenya, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
@@ -83,7 +87,7 @@ public class Sessio extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(usuari, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUsuari, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -91,7 +95,7 @@ public class Sessio extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {contrasenya, usuari});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {contrasenya, txtUsuari});
 
         acces.setBackground(new java.awt.Color(102, 102, 255));
         acces.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
@@ -189,7 +193,10 @@ public class Sessio extends javax.swing.JFrame {
     }
     
     public Usuari obtenirUsuariContrasenya() {
-        String user = new String(this.usuari.getText());
+        String user=this.txtUsuari.getText();
+        
+        System.out.println("aqui estic--->"+user);
+     
         String password = new String(this.contrasenya.getPassword());
         
         Usuari usuariLogejat = new Usuari (user, password);
@@ -206,7 +213,7 @@ public class Sessio extends javax.swing.JFrame {
     }//GEN-LAST:event_contrasenyaActionPerformed
 
     private void accesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesActionPerformed
-        String user = new String(this.usuari.getText());
+        String user = new String(this.txtUsuari.getText());
         String password = new String(this.contrasenya.getPassword());
 
         Usuari u = new Usuari (user, password);
@@ -228,37 +235,30 @@ public class Sessio extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Sessio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Sessio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Sessio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Sessio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new Sessio().setVisible(true);
-            }
-        });
+        try{
+            //Creant Socket client per connectar-nos al servidor
+            Socket cs = new Socket("localhost", 5050);
+		
+            //Obtenim els fluxos d'entrada i sortida del socket
+            InputStream is = cs.getInputStream();
+            OutputStream os = cs.getOutputStream();
+			
+            //Obrim pantalla login
+            Sessio sessioFrame = new Sessio();
+            //sessioFrame.setModal;
+            sessioFrame.setVisible(true);
+            
+            //Obtenim les credencials i les enviem al servidor
+            Usuari usuari = sessioFrame.obtenirUsuariContrasenya();
+            System.out.println("usuari: " + usuari.getUsuari());
+           
+            
+            //Tanquem el socket
+            cs.close();
+			
+    	} catch(IOException e){
+            e.printStackTrace();
+	}
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -270,6 +270,6 @@ public class Sessio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField usuari;
+    private javax.swing.JTextField txtUsuari;
     // End of variables declaration//GEN-END:variables
 }
