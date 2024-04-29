@@ -59,4 +59,17 @@ public class ServidorSocketStream {
             e.printStackTrace();
         }
     }
+    
+    private static void enviarMissatge(Socket socket, String missatge) throws IOException {
+        OutputStream os = socket.getOutputStream();
+        os.write(missatge.getBytes());
+    }
+
+    private static String rebreMissatge(Socket socket) throws IOException {
+        InputStream is = socket.getInputStream();
+        byte[] buffer = new byte[1024];
+        int length = is.read(buffer);
+        return new String(buffer, 0, length);
+    }
+
 }
