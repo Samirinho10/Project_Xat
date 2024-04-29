@@ -199,17 +199,6 @@ public class Principal extends javax.swing.JFrame {
         mostrarXat();
     }
     
-    private void mostrarUsuaris() {
-        menuList.removeAll();
-        menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
-        for (int i = 0; i < 20; i++) {
-            Item_People itemPeople = new Item_People("Usuari " + i);
-            menuList.add(itemPeople);
-            itemPeople.setBounds(0, i * 50, 216, 50);
-        }
-        refreshMenuList();
-    }
-    
     private void mostrarXat() {
         menuList.removeAll();
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
@@ -218,6 +207,17 @@ public class Principal extends javax.swing.JFrame {
             Item_People itemPeople = new Item_People("Xat " + i);
             menuList.add(itemPeople);
             itemPeople.setBounds(0, i * 50, 246, 50);
+        }
+        refreshMenuList();
+    }
+    
+    private void mostrarUsuaris() {
+        menuList.removeAll();
+        menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
+        for (int i = 0; i < 20; i++) {
+            Item_People itemPeople = new Item_People("Usuari " + i);
+            menuList.add(itemPeople);
+            itemPeople.setBounds(0, i * 50, 216, 50);
         }
         refreshMenuList();
     }

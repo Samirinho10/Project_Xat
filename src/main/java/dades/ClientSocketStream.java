@@ -8,7 +8,7 @@ import java.util.Scanner;
 import vista.Sessio;
 
 
-public class ClienteSocketStream {
+public class ClientSocketStream {
 	
     public static void main(String[] args){
     
