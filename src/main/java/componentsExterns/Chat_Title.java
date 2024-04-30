@@ -7,9 +7,10 @@ public class Chat_Title extends javax.swing.JPanel {
         initComponents();
     }
     
-    private void setUserName(String usuari) {
-        lblUsuari.setText(usuari);
+    public void setUserName(String userName) {
+        lblUsuari.setText(userName);
     }
+
     
     private void estatActiu() {
         lblStatus.setText("En línea");

@@ -1,13 +1,16 @@
-
 package vista;
 
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import componentsExterns.*;
+import dades.Connexio;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import org.bson.Document;
 
 //jcalendar 1.4 jar download
-
-
 public class Principal extends javax.swing.JFrame {
 
     public Principal() {
@@ -187,30 +190,33 @@ public class Principal extends javax.swing.JFrame {
     private void init() {
         //editar scroll bar
         sp.setVerticalScrollBar(new ScrollBar());
-        
+
         //Assignar tamany del Frame
-        int x = 1200; 
+        int x = 1200;
         int y = 800;
 
         setSize(x, y);
         setLocationRelativeTo(null);
-        
+
         //mostrem els xats a l'obrir
         mostrarXat();
     }
-    
+
     private void mostrarXat() {
         menuList.removeAll();
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
 
-        for (int i = 0; i < 20; i++) {
-            Item_People itemPeople = new Item_People("Xat " + i);
+        List<String> listaUsuarios = obtenerListaUsuarios();
+        for (String usuario : listaUsuarios) {
+            Item_People itemPeople = new Item_People(usuario);
             menuList.add(itemPeople);
-            itemPeople.setBounds(0, i * 50, 246, 50);
+            itemPeople.setBounds(0, menuList.getComponentCount() * 50, 246, 50);
         }
+
         refreshMenuList();
     }
-    
+
+
     private void mostrarUsuaris() {
         menuList.removeAll();
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
@@ -221,7 +227,7 @@ public class Principal extends javax.swing.JFrame {
         }
         refreshMenuList();
     }
-    
+
     private void mostrarHistorial() {
         menuList.removeAll();
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
@@ -233,11 +239,47 @@ public class Principal extends javax.swing.JFrame {
         }
         refreshMenuList();
     }
-    
+
     private void refreshMenuList() {
         menuList.repaint();
         menuList.revalidate();
     }
+
+    public List<String> obtenerListaUsuarios() {
+        List<String> listaUsuarios = new ArrayList<>();
+        try {
+            // Acceder a la colección de usuarios desde la clase Connexio
+            MongoCollection<Document> usuaris = Connexio.usuaris;
+
+            // Realizar la consulta para obtener todos los usuarios
+            FindIterable<Document> cursor = usuaris.find();
+
+            // Guardar los usuarios obtenidos en el array
+            for (Document doc : cursor) {
+                String usuario = doc.getString("_id");
+                listaUsuarios.add(usuario);
+            }
+        } catch (Exception e) {
+            System.err.println("Error al obtener la lista de usuarios: " + e);
+        }
+        return listaUsuarios;
+    }
+    
+//    public static void llistarClients() {
+//        try {
+//            MongoCollection<Document> usuaris = Connexio.usuaris;
+//
+//            FindIterable<Document> cursor = usuaris.find();
+//
+//            System.out.println("Llistat de clients:");
+//            for (Document doc : cursor) {
+//                String usuari = doc.getString("_id");
+//                System.out.println("- " + usuari);
+//            }
+//        } catch (Exception e) {
+//            System.err.println("Error en obtenir la llista de clients: " + e);
+//        }
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private componentsExterns.MenuButton BtnHistorial;

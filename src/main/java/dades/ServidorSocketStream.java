@@ -9,7 +9,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ServidorSocketStream {
     
     private static List<String> usuarisConnectats = new ArrayList<>();

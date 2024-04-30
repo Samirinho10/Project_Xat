@@ -35,10 +35,14 @@ public class Item_People extends JPanel {
         imageAvatar1 = new componentsExterns.ImageAvatar();
 
         setBackground(new java.awt.Color(229, 229, 229));
-        setPreferredSize(new java.awt.Dimension(200, 50));
+        setMaximumSize(new java.awt.Dimension(300, 200));
+        setPreferredSize(new java.awt.Dimension(50, 50));
+        setRequestFocusEnabled(false);
 
         lb.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         lb.setText("Name");
+        lb.setMaximumSize(new java.awt.Dimension(20, 19));
+        lb.setRequestFocusEnabled(false);
 
         imageAvatar1.setBorderSize(0);
         imageAvatar1.setImage(new javax.swing.ImageIcon("profile.png"));
@@ -51,21 +55,20 @@ public class Item_People extends JPanel {
                 .addGap(5, 5, 5)
                 .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                .addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, Short.MAX_VALUE)))
                 .addGap(3, 3, 3))
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private componentsExterns.ImageAvatar imageAvatar1;
