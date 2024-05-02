@@ -49,8 +49,16 @@ public class ServidorSocketStream {
                 os.write(userListString.getBytes());
                 //System.out.println("Usuaris actualment connectats: " + userListString);
 
+                //rebre missatge client
+                byte[] missatgeClient = new byte[1024];
+                is.read(missatgeClient);
+                String missatge = new String(missatgeClient).trim();
+                System.out.println("missatge rebut: " + missatge);
+                
+                
+                
                 //fil 1: atendre els clients que inicien sessió
-                new atendre_clients(newSocket).start();
+                //new atendre_clients(newSocket).start();
                 
             }
 			

@@ -48,7 +48,8 @@ public class ClientSocketStream {
                     System.out.println(usuari);
                 }
                 
-                //new enviarMissatgesAlServidor(cs).start();
+                new enviarMissatgesAlServidor(cs).start();
+
             }
         
             cs.close();

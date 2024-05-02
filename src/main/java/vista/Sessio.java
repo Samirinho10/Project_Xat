@@ -193,11 +193,26 @@ public class Sessio extends javax.swing.JFrame {
             principalFrame.setVisible(true);
             this.dispose();
             return true;
+            
+        } else if (Connexio.existeixUsuari(usuariConnectat)){
+            JOptionPane.showMessageDialog(null, "Contrasenya incorrecta. Torna a provar-ho", 
+                    "Informació", JOptionPane.INFORMATION_MESSAGE);
+            
         } else {
-            Connexio.inserirUsuari(usuariConnectat);
-            JOptionPane.showMessageDialog(this, "Usuari i/o contrasenya incorrectes.");
-            return false;
+            int resultat = JOptionPane.showConfirmDialog(
+            	this,
+            	"Aquest usuari no existeix. Vols afegir-lo?",
+            	"Inici de Sessió",
+            	JOptionPane.YES_OPTION
+            );
+
+            if (resultat == JOptionPane.YES_OPTION) {
+                Connexio.inserirUsuari(usuariConnectat);
+                JOptionPane.showMessageDialog(null, "Usuari afegit correctament. Ara pots iniciar sessió amb les seves credencials.", 
+                        "Informació", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
+        return false;
     }
 
     private void usuariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariActionPerformed

@@ -58,6 +58,21 @@ public class Connexio {
         }
     }
     
+    public static boolean existeixUsuari(Usuari u) {
+        String usuari = u.getUsuari();
+        String contrasenya = u.getContrasenya();
+
+        try {
+            Document usuariDoc = usuaris.find(new Document("_id", usuari)).first();
+
+            return usuariDoc != null;
+        } catch (Exception e) {
+            System.err.println("Error al verificar si existeix l'usuari: " + e);
+            return false;
+        }
+    }
+
+    
     public static List<String> obtenirLlistatUsuaris() {
         List<String> llistaUsuaris = new ArrayList<>();
         

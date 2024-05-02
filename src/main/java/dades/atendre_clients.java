@@ -1,6 +1,7 @@
 
 package dades;
 
+import componentsExterns.Chat_Bottom;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,6 +26,10 @@ public class atendre_clients extends Thread {
             // atenc al client
             InputStream is = newSocket.getInputStream();
             OutputStream os = newSocket.getOutputStream();
+            
+            if (Chat_Bottom.cmd.getModel().isPressed()) {
+                
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace();
