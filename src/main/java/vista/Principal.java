@@ -29,6 +29,7 @@ public class Principal extends javax.swing.JFrame {
         chat = new componentsExterns.Chat();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -88,7 +89,7 @@ public class Principal extends javax.swing.JFrame {
         );
         menuListLayout.setVerticalGroup(
             menuListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 893, Short.MAX_VALUE)
+            .addGap(0, 950, Short.MAX_VALUE)
         );
 
         sp.setViewportView(menuList);
@@ -134,6 +135,10 @@ public class Principal extends javax.swing.JFrame {
         body.add(Home, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("File");
+
+        jMenu3.setText("Sortir");
+        jMenu1.add(jMenu3);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Navega");
@@ -251,6 +256,7 @@ public class Principal extends javax.swing.JFrame {
     private componentsExterns.Chat chat;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLayeredPane menuList;
     private javax.swing.JScrollPane sp;

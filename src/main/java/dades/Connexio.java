@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import model.Missatges;
@@ -31,7 +32,7 @@ public class Connexio {
             }
 
             Document usuariDoc = new Document("_id", usuari)
-                    .append("contrasenya", contrasenya);
+                    .append("contrasenya", hashContrasenya(contrasenya));
 
             usuaris.insertOne(usuariDoc);
 
@@ -47,7 +48,7 @@ public class Connexio {
         try {
             Document usuariDoc = usuaris.find(new Document("_id", usuari)).first();
 
-            if (usuariDoc != null && usuariDoc.getString("contrasenya").equals(contrasenya)) {
+            if (usuariDoc != null && usuariDoc.getString("contrasenya").equals(hashContrasenya(contrasenya))) {
                 return true;
             } else {
                 return false;
@@ -60,7 +61,6 @@ public class Connexio {
     
     public static boolean existeixUsuari(Usuari u) {
         String usuari = u.getUsuari();
-        String contrasenya = u.getContrasenya();
 
         try {
             Document usuariDoc = usuaris.find(new Document("_id", usuari)).first();
@@ -124,5 +124,24 @@ public class Connexio {
         } catch (Exception e) {
             System.err.println("Error en guardar el missatge: " + e);
         }
+    }
+    
+ 
+    //encriptar Contrasenya (hash)
+    public static String hashContrasenya(String contrasenya) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(contrasenya.getBytes());
+            byte[] resumen = md.digest();
+            
+            String contrasenyaAmbHash = new String(resumen);
+            
+            return contrasenyaAmbHash;
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        return null;
     }
 }
