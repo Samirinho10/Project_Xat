@@ -48,11 +48,11 @@ public class Chat_Title extends javax.swing.JPanel {
 
         lblUsuari.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblUsuari.setForeground(new java.awt.Color(63, 63, 63));
-        lblUsuari.setText("Usuari");
+        lblUsuari.setText("Grup");
         layer.add(lblUsuari);
 
         lblStatus.setForeground(new java.awt.Color(42, 145, 61));
-        lblStatus.setText("En línea");
+        lblStatus.setText("Els membres del grup et veuran connectat");
         layer.add(lblStatus);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

@@ -7,6 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import java.util.ArrayList;
 import java.util.List;
+import model.Missatges;
 import model.Usuari;
 import org.bson.Document;
 
@@ -70,5 +71,14 @@ public class Connexio {
             System.err.println("Error en obtenir la llista d'usuaris: " + e);
         }
         return llistaUsuaris;
+    }
+    
+    public static void guardarMissatges(Missatges missatge) {
+        Document MissatgeDoc = new Document("idMissatge", missatge.getIdMissatge())
+                        .append("idUsuari", missatge.getIdUsuari())
+                        .append("idSala", missatge.getIdSala())
+                        .append("missatge", missatge.getMissatge())
+                        .append("data", missatge.getData());
+        missatges.insertOne(MissatgeDoc);
     }
 }

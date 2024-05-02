@@ -1,14 +1,9 @@
 package vista;
 
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
 import componentsExterns.*;
 import dades.Connexio;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import org.bson.Document;
 
 //jcalendar 1.4 jar download
 public class Principal extends javax.swing.JFrame {

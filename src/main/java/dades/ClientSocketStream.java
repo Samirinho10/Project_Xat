@@ -46,6 +46,8 @@ public class ClientSocketStream {
                 for (String usuari : llistaUsuaris) {
                     System.out.println(usuari);
                 }
+                
+                new enviarMissatgesAlServidor(cs).start();
             }
         
             cs.close();

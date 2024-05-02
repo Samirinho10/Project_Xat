@@ -1,6 +1,8 @@
 
 package componentsExterns;
 
+import dades.Connexio;
+import dades.enviarMissatgesAlServidor;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -8,10 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import model.Missatges;
 import model.Usuari;
 import net.miginfocom.swing.MigLayout;
 
@@ -64,6 +68,14 @@ public class Chat_Bottom extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 String text = txt.getText().trim();
+                
+                String usuari = 1;
+                String sala = "grup";
+                
+                int idMissatge, int idUsuari, int idSala, String missatge, Date data
+                Missatges missatge = new Missatge ();
+                Connexio.guardarMissatges(missatge);
+                
                 if (!text.equals("")) {
                     PublicEvent.getInstance().getEventChat().sendMessage(text);
                     txt.setText("");

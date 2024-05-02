@@ -21,9 +21,11 @@ public class enviarMissatgesAlServidor extends Thread {
         try {
             Thread.sleep(10000);
             
+            
+            
             OutputStream os = newSocket.getOutputStream();
             enviarMissatge(os, "Aquest és un missatge de prova al servidor.");
-
+            
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (InterruptedException ex) {
