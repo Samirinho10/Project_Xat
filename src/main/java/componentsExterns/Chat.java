@@ -1,9 +1,11 @@
 
 package componentsExterns;
 
+import model.Missatges;
+import model.Usuari;
+
 public class Chat extends javax.swing.JPanel {
-
-
+    
     public Chat() {
         initComponents();
         init();
@@ -11,12 +13,27 @@ public class Chat extends javax.swing.JPanel {
     
     private void init(){
         PublicEvent.getInstance().addEventChat(new EventChat() {
-            @Override
-            public void sendMessage(String text) {
-                chat_Body.addItemRight(text);
+            public void sendMessage(String missatge) {
+                chat_Body.addItemRight(missatge);
+            }
+
+            public void receiveMessage(Missatges missatge, Usuari usuari) {
+                if (chat_Title.getUsuari().equals(missatge.getIdUsuari())) {
+                    chat_Body.addItemLeft(missatge.getMissatge(), usuari.getUsuari());
+                }
             }
         });
     }
+    
+    public void setUsuari(Usuari usuari) {
+        chat_Title.setUserName(usuari);
+        chat_Bottom.setUsuari(usuari);
+        chat_Body.clearChat();
+    }
+
+//    public void updateUser(Usuari usuari) {
+//        chatTitle.updateUser(usuari);
+//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

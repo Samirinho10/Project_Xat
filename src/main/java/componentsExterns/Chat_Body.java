@@ -47,6 +47,12 @@ public class Chat_Body extends javax.swing.JPanel {
         body.repaint();
         body.revalidate();
     }
+    
+    public void clearChat() {
+        body.removeAll();
+        repaint();
+        revalidate();
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

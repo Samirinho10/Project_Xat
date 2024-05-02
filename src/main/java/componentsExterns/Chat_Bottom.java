@@ -12,11 +12,22 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import model.Usuari;
 import net.miginfocom.swing.MigLayout;
 
 
 public class Chat_Bottom extends javax.swing.JPanel {
 
+    private Usuari usuari;
+    
+    public Usuari getUsuari() {
+        return usuari;
+    }
+
+    public void setUsuari(Usuari usuari) {
+        this.usuari = usuari;
+    }
+    
     public Chat_Bottom() {
         initComponents();
         init();

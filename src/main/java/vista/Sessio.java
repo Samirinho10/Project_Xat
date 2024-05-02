@@ -194,6 +194,7 @@ public class Sessio extends javax.swing.JFrame {
             this.dispose();
             return true;
         } else {
+            Connexio.inserirUsuari(usuariConnectat);
             JOptionPane.showMessageDialog(this, "Usuari i/o contrasenya incorrectes.");
             return false;
         }

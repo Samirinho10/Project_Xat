@@ -1,14 +1,28 @@
 
 package componentsExterns;
 
+import model.Usuari;
+
 public class Chat_Title extends javax.swing.JPanel {
 
+    private Usuari usuari;
+    
+    public Usuari getUsuari() {
+        return usuari;
+    }
+    
     public Chat_Title() {
         initComponents();
     }
     
-    public void setUserName(String userName) {
-        lblUsuari.setText(userName);
+    public void setUserName(Usuari usuari) {
+        this.usuari = usuari;
+        lblUsuari.setText(usuari.getUsuari());
+        if (usuari.getEstat() == "actiu") {
+            estatActiu();
+        } else {
+            setEstatText("Desconnectat");
+        }
     }
 
     
