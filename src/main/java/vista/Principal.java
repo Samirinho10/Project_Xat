@@ -206,11 +206,11 @@ public class Principal extends javax.swing.JFrame {
         menuList.removeAll();
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
 
-        List<String> listaUsuarios = obtenerListaUsuarios();
-        for (String usuario : listaUsuarios) {
+        List<String> llistaUsuaris = Connexio.obtenirLlistatUsuaris();
+        for (String usuario : llistaUsuaris) {
             Item_People itemPeople = new Item_People(usuario);
             menuList.add(itemPeople);
-            itemPeople.setBounds(0, menuList.getComponentCount() * 50, 246, 50);
+            itemPeople.setBounds(0, menuList.getComponentCount() * 50, 216, 10);
         }
 
         refreshMenuList();
@@ -244,42 +244,6 @@ public class Principal extends javax.swing.JFrame {
         menuList.repaint();
         menuList.revalidate();
     }
-
-    public List<String> obtenerListaUsuarios() {
-        List<String> listaUsuarios = new ArrayList<>();
-        try {
-            // Acceder a la colección de usuarios desde la clase Connexio
-            MongoCollection<Document> usuaris = Connexio.usuaris;
-
-            // Realizar la consulta para obtener todos los usuarios
-            FindIterable<Document> cursor = usuaris.find();
-
-            // Guardar los usuarios obtenidos en el array
-            for (Document doc : cursor) {
-                String usuario = doc.getString("_id");
-                listaUsuarios.add(usuario);
-            }
-        } catch (Exception e) {
-            System.err.println("Error al obtener la lista de usuarios: " + e);
-        }
-        return listaUsuarios;
-    }
-    
-//    public static void llistarClients() {
-//        try {
-//            MongoCollection<Document> usuaris = Connexio.usuaris;
-//
-//            FindIterable<Document> cursor = usuaris.find();
-//
-//            System.out.println("Llistat de clients:");
-//            for (Document doc : cursor) {
-//                String usuari = doc.getString("_id");
-//                System.out.println("- " + usuari);
-//            }
-//        } catch (Exception e) {
-//            System.err.println("Error en obtenir la llista de clients: " + e);
-//        }
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private componentsExterns.MenuButton BtnHistorial;

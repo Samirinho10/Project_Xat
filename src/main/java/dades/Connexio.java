@@ -1,9 +1,12 @@
 package dades;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
+import java.util.ArrayList;
+import java.util.List;
 import model.Usuari;
 import org.bson.Document;
 
@@ -51,5 +54,21 @@ public class Connexio {
             System.err.println("Error al verificar creedencials: " + e);
             return false;
         }
+    }
+    
+    public static List<String> obtenirLlistatUsuaris() {
+        List<String> llistaUsuaris = new ArrayList<>();
+        
+        try {
+            FindIterable<Document> cursor = usuaris.find();
+
+            for (Document doc : cursor) {
+                String usuari = doc.getString("_id");
+                llistaUsuaris.add(usuari);
+            }
+        } catch (Exception e) {
+            System.err.println("Error en obtenir la llista d'usuaris: " + e);
+        }
+        return llistaUsuaris;
     }
 }
