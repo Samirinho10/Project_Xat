@@ -5,6 +5,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import java.util.ArrayList;
 import java.util.List;
 import model.Missatges;
@@ -73,12 +74,40 @@ public class Connexio {
         return llistaUsuaris;
     }
     
+    public static Usuari obtenirUsuariPerId(String idUsuari) {
+        try {
+            Document usuariDoc = usuaris.find(Filters.eq("_id", idUsuari)).first();
+            
+            if (usuariDoc != null) {
+                String id = usuariDoc.getString("_id");
+                String contrasenya = usuariDoc.getString("contrasenya");
+                String estat = usuariDoc.getString("estat");
+
+                return new Usuari(id, contrasenya, estat);
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e);
+        }
+        
+        return null;
+    }
+    
     public static void guardarMissatges(Missatges missatge) {
-        Document MissatgeDoc = new Document("idMissatge", missatge.getIdMissatge())
-                        .append("idUsuari", missatge.getIdUsuari())
-                        .append("idSala", missatge.getIdSala())
-                        .append("missatge", missatge.getMissatge())
-                        .append("data", missatge.getData());
-        missatges.insertOne(MissatgeDoc);
+        try {
+            Usuari usuari = missatge.getIdUsuari();
+            Document usuariDoc = usuaris.find(new Document("_id", usuari.getUsuari())).first();
+
+            if (usuariDoc != null) {
+                Document MissatgeDoc = new Document("idUsuari", usuariDoc)
+                                    .append("idSala", missatge.getIdSala())
+                                    .append("missatge", missatge.getMissatge())
+                                    .append("data", missatge.getData());
+                missatges.insertOne(MissatgeDoc);
+            } else {
+                System.err.println("L'usuari no existeix a la base de dades: " + usuari.getUsuari());
+            }
+        } catch (Exception e) {
+            System.err.println("Error en guardar el missatge: " + e);
+        }
     }
 }

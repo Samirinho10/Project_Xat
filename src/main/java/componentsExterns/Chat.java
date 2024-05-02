@@ -20,6 +20,8 @@ public class Chat extends javax.swing.JPanel {
             public void receiveMessage(Missatges missatge, Usuari usuari) {
                 if (chat_Title.getUsuari().equals(missatge.getIdUsuari())) {
                     chat_Body.addItemLeft(missatge.getMissatge(), usuari.getUsuari());
+                } else if (chat_Title.getUsuari().equals("Grup")) {
+                    chat_Body.addItemLeft(missatge.getMissatge(), usuari.getUsuari());
                 }
             }
         });

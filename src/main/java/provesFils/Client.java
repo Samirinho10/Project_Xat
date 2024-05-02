@@ -1,5 +1,5 @@
 
-package dades;
+package provesFils;
 
 import java.io.*;
 import java.net.*;

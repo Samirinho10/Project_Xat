@@ -9,5 +9,4 @@ public interface EventChat {
                 
     public void receiveMessage(Missatges missatge, Usuari usuari);
                
-     
 }

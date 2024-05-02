@@ -1,8 +1,8 @@
 
 package dades;
 
+import componentsExterns.Chat_Bottom;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -11,21 +11,21 @@ import java.util.logging.Logger;
 public class enviarMissatgesAlServidor extends Thread {
 
     private Socket newSocket = null;
+    private final boolean clicEnBotonCmd;
 
-    public enviarMissatgesAlServidor (Socket cs) {
+    public enviarMissatgesAlServidor(Socket cs, boolean clicEnBotonCmd) {
         newSocket = cs;
+        this.clicEnBotonCmd = clicEnBotonCmd;
     }
     
-    public void run() {
-        
+     public void run() {
         try {
             Thread.sleep(10000);
-            
-            
-            
-            OutputStream os = newSocket.getOutputStream();
-            enviarMissatge(os, "Aquest és un missatge de prova al servidor.");
-            
+            if (clicEnBotonCmd) {
+                OutputStream os = newSocket.getOutputStream();
+                String missatge = Chat_Bottom.txt.getText();
+                enviarMissatge(os, missatge);
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (InterruptedException ex) {

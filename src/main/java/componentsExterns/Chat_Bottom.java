@@ -1,8 +1,8 @@
 
 package componentsExterns;
 
+import dades.ClientSocketStream;
 import dades.Connexio;
-import dades.enviarMissatgesAlServidor;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -22,6 +21,9 @@ import net.miginfocom.swing.MigLayout;
 
 public class Chat_Bottom extends javax.swing.JPanel {
 
+    public static JIMSendTextPane txt;
+    public static JButton cmd;
+            
     private Usuari usuari;
     
     public Usuari getUsuari() {
@@ -41,7 +43,7 @@ public class Chat_Bottom extends javax.swing.JPanel {
         setLayout(new MigLayout("fillx, filly", "0[fill]0[]0[]2", "2[fill]2"));
         JScrollPane scroll = new JScrollPane();
         scroll.setBorder(null);
-        JIMSendTextPane txt = new JIMSendTextPane();
+        txt = new JIMSendTextPane();
         txt.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent ke) {
@@ -59,7 +61,7 @@ public class Chat_Bottom extends javax.swing.JPanel {
         panel.setLayout(new MigLayout("filly", "0[]0", "0[bottom]0"));
         panel.setPreferredSize(new Dimension(30, 28));
         panel.setBackground(Color.WHITE);
-        JButton cmd = new JButton();
+        cmd = new JButton();
         cmd.setBorder(null);
         cmd.setContentAreaFilled(false);
         cmd.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -68,12 +70,11 @@ public class Chat_Bottom extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 String text = txt.getText().trim();
-                
-                String usuari = 1;
+                String usuariConnectat = ClientSocketStream.txtUsuariConnectat; //agafem l'usuari que ha iniciat sessió
+                Usuari usuari = Connexio.obtenirUsuariPerId(usuariConnectat);
                 String sala = "grup";
                 
-                int idMissatge, int idUsuari, int idSala, String missatge, Date data
-                Missatges missatge = new Missatge ();
+                Missatges missatge = new Missatges (usuari, sala, text);
                 Connexio.guardarMissatges(missatge);
                 
                 if (!text.equals("")) {

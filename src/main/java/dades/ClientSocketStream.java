@@ -9,6 +9,7 @@ import vista.Sessio;
 
 
 public class ClientSocketStream {
+    public static String txtUsuariConnectat;
 	
     public static void main(String[] args){
     
@@ -30,11 +31,11 @@ public class ClientSocketStream {
             }
 
             if (sessioFrame.iniciSessio()) {
-                String txtUsuari = sessioFrame.txtUsuari.getText();
-                System.out.println("Soc " + txtUsuari);
+                txtUsuariConnectat = sessioFrame.txtUsuari.getText();
+                System.out.println("Soc " + txtUsuariConnectat);
                 
                 //Enviem el nostre usuari al servidor
-                os.write(txtUsuari.getBytes());
+                os.write(txtUsuariConnectat.getBytes());
                 
                 //Esperem la llista d'usuaris connectats
                 byte[] llistaUsuarisConnectatsBytes = new byte[1024];
@@ -47,7 +48,7 @@ public class ClientSocketStream {
                     System.out.println(usuari);
                 }
                 
-                new enviarMissatgesAlServidor(cs).start();
+                //new enviarMissatgesAlServidor(cs).start();
             }
         
             cs.close();
