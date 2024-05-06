@@ -15,10 +15,14 @@ import org.bson.Document;
 
 public class Connexio {
 
-    static String connectionString = "mongodb://localhost:27017";
+    static String mongoUsuari = "grup3";
+    static String mongoContrasenya = "lleó789";
+    static String host = "57.129.5.24";
+    static int port = 27017;
+    static String connectionString = "mongodb://" + mongoUsuari + ":" + mongoContrasenya + "@" + host + ":" + port;
 
     static MongoClient mongoClient = MongoClients.create(connectionString);
-    static MongoDatabase database = mongoClient.getDatabase("Xat");
+    static MongoDatabase database = mongoClient.getDatabase("grup3");
     public static MongoCollection<Document> usuaris = database.getCollection("usuaris");
     static MongoCollection<Document> missatges = database.getCollection("missatges");
 
