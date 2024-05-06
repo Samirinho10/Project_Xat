@@ -189,8 +189,6 @@ public class Sessio extends javax.swing.JFrame {
         Usuari usuariConnectat = new Usuari(usuari, contrasenya);
 
         if (Connexio.verificarCreedencials(usuariConnectat)) {
-            Principal principalFrame = new Principal();
-            principalFrame.setVisible(true);
             this.dispose();
             return true;
             
