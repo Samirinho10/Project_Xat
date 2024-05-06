@@ -77,10 +77,14 @@ public class Chat_Bottom extends javax.swing.JPanel {
                 String sala = "grup";
                 
                 Missatges missatge = new Missatges (usuari, sala, text);
-                Connexio.guardarMissatges(missatge);
                 
                 if (!text.equals("")) {
+                    Connexio.guardarMissatges(missatge);
                     PublicEvent.getInstance().getEventChat().sendMessage(text);
+                    
+                    //enviar missatge al client
+                    
+                    
                     txt.setText("");
                     txt.grabFocus();
                     refresh();

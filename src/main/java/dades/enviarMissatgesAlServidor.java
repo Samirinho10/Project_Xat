@@ -2,6 +2,9 @@
 package dades;
 
 import componentsExterns.Chat_Bottom;
+import static componentsExterns.Chat_Bottom.cmd;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,11 +29,17 @@ public class enviarMissatgesAlServidor extends Thread {
             InputStream is = newSocket.getInputStream();
             OutputStream os = newSocket.getOutputStream();
             
-            if (Chat_Bottom.cmd.getModel().isPressed()) {
-                String missatge = Chat_Bottom.txt.getText();
-                os.write(missatge.getBytes());
-                System.out.println("missatge enviat: " + missatge);
-            }
+            cmd.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        String missatge = Chat_Bottom.txt.getText();
+                        os.write(missatge.getBytes());
+                        System.out.println("missatge enviat: " + missatge);
+                    } catch (IOException ex) {
+                        Logger.getLogger(enviarMissatgesAlServidor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
 
         } catch (IOException ex) {
             ex.printStackTrace();

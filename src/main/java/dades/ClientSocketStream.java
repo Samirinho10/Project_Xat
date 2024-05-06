@@ -1,5 +1,6 @@
 package dades;
 
+import componentsExterns.Chat_Bottom;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -48,7 +49,13 @@ public class ClientSocketStream {
                     System.out.println(usuari);
                 }
                 
-                new enviarMissatgesAlServidor(cs).start();
+                if (Chat_Bottom.cmd.getModel().isPressed()) {
+                    String missatge = Chat_Bottom.txt.getText();
+                    os.write(missatge.getBytes());
+                    System.out.println("missatge enviat: " + missatge);
+                }
+                
+                
 
             }
         
