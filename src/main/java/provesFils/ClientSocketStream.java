@@ -1,0 +1,51 @@
+
+package provesFils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import vista.Principal;
+import vista.Sessio;
+
+
+public class ClientSocketStream {
+    public static String txtUsuariConnectat;
+    
+    public static void main(String[] args){
+    
+        try {
+            // Creant Socket client per connectar-nos al servidor
+            Socket cs = new Socket("localhost", 5050);
+
+            // Obtenim els fluxos d'entrada i sortida del socket
+            InputStream is = cs.getInputStream();
+            OutputStream os = cs.getOutputStream();
+
+            // Mostrar pantalla inici de sessió
+            Sessio sessioFrame = new Sessio();
+            sessioFrame.setVisible(true);
+
+            // Esperem a que es tanqui la pantalla per assegurar que l'usuari anota les dades
+            while(sessioFrame.isVisible()) {
+                Thread.sleep(100);
+            }
+
+            if (sessioFrame.iniciSessio()) {
+                txtUsuariConnectat = sessioFrame.txtUsuari.getText();
+                System.out.println("Soc " + txtUsuariConnectat);
+                
+                Principal principalFrame = new Principal();
+                principalFrame.setVisible(true);
+                
+                //Enviem el nostre usuari al servidor
+                os.write(txtUsuariConnectat.getBytes());
+                
+                
+            }
+			
+        } catch(IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}

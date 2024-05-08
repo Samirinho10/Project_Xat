@@ -9,11 +9,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import model.Usuari;
 
 public class ServidorSocketStream {
     
     public static Scanner teclat = new Scanner(System.in);
     
+    private static List<Usuari> clientsConnectats = new ArrayList<>();
     private static List<String> usuarisConnectats = new ArrayList<>();
     
     public static void main(String[] args) {
@@ -28,7 +30,8 @@ public class ServidorSocketStream {
                 System.out.println("\nServidor escoltant... ja preparat");
                 Socket newSocket = serverSocket.accept();
 
-                tractarClient(newSocket);
+                new tractarClient(newSocket).start();
+                
             }
 
         } catch (IOException e) {
@@ -36,38 +39,47 @@ public class ServidorSocketStream {
         }
     }
     
-    private static void tractarClient(Socket clientSocket) {
-        try {
-            InputStream is = clientSocket.getInputStream();
-            OutputStream os = clientSocket.getOutputStream();
+    static class tractarClient extends Thread {
+        private Socket socket;
+        private InputStream is;
 
-            // Llegir el nom d'usuari del client
-            byte[] usuariBytes = new byte[50];
-            is.read(usuariBytes);
-            String usuari = new String(usuariBytes).trim();
+        public tractarClient(Socket socket) {
+            this.socket = socket;
+        }
 
-            System.out.println("S'ha connectat l'usuari " + usuari);
+        public void run() {
+            try {
+                InputStream is = socket.getInputStream();
+                OutputStream os = socket.getOutputStream();
 
-            // Afegir el nou usuari a la llista d'usuaris connectats
-            usuarisConnectats.add(usuari);
+                // Llegir el nom d'usuari del client
+                byte[] usuariBytes = new byte[50];
+                is.read(usuariBytes);
+                String usuari = new String(usuariBytes).trim();
 
-            // Enviar la llista d'usuaris connectats als clients
-            StringBuilder userListBuilder = new StringBuilder();
+                System.out.println("S'ha connectat l'usuari " + usuari);
 
-            for (String nouUsuari : usuarisConnectats) {
-                userListBuilder.append(nouUsuari).append(",");
+                // Afegir el nou usuari a la llista d'usuaris connectats
+                usuarisConnectats.add(usuari);
+
+                // Enviar la llista d'usuaris connectats als clients
+                StringBuilder userListBuilder = new StringBuilder();
+
+                for (String nouUsuari : usuarisConnectats) {
+                    userListBuilder.append(nouUsuari).append(",");
+                }
+                String userListString = userListBuilder.toString();
+                os.write(userListString.getBytes());
+
+                // fil: rebre missatges del client
+                new RebreMissatges(socket, is).start();
+
+                // fil: enviar missatges al client
+                new EnviarMissatges(socket, os).start();
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            String userListString = userListBuilder.toString();
-            os.write(userListString.getBytes());
-
-            // fil: rebre missatges del client
-            new RebreMissatges(clientSocket, is).start();
-
-            // fil: enviar missatges al client
-            new EnviarMissatges(clientSocket, os).start();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -84,7 +96,7 @@ public class ServidorSocketStream {
             try {
                 Scanner scanner = new Scanner(is);
                 while (true) {
-                    // Verificar si hay una línea disponible antes de intentar leerla
+                    
                     if (scanner.hasNextLine()) {
                         String missatge = scanner.nextLine();
                         System.out.println("Missatge rebut del client: " + missatge);
@@ -119,3 +131,23 @@ public class ServidorSocketStream {
         }
     }
 }
+
+
+/* funcions
+    enviargrup
+    enviar persona en concret
+
+    array nik i socol
+
+
+
+
+    while true
+        accept --> llegir el que envia el client (obtenir nick)
+        mirar si hi ha més usuaris o no per dir que s'ha connectat
+        servidor posar en marxa fil per comprovar que els fils estan connectats
+        afegir usuari a la llista
+        posar en marxa fil de rebre missatges (enviar socol i llista d'usuaris)
+        enviament desconnexio
+        
+*/

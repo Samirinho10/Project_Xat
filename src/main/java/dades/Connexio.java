@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import java.net.Socket;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,8 +102,9 @@ public class Connexio {
                 String id = usuariDoc.getString("_id");
                 String contrasenya = usuariDoc.getString("contrasenya");
                 String estat = usuariDoc.getString("estat");
+                Socket sc = null;
 
-                return new Usuari(id, contrasenya, estat);
+                return new Usuari(id, contrasenya, estat, sc);
             }
         } catch (Exception e) {
             System.err.println("Error: " + e);
