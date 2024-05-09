@@ -3,9 +3,20 @@ package componentsExterns;
 
 import model.Missatges;
 import model.Usuari;
+import provesFils.ClientSocketStream;
 
 public class Chat extends javax.swing.JPanel {
     
+    private ClientSocketStream client;
+
+    public Chat_Body getChat_Body() {
+        return chat_Body;
+    }
+
+    public Chat_Title getChat_Title() {
+        return chat_Title;
+    }
+
     public Chat() {
         initComponents();
         init();
@@ -28,7 +39,7 @@ public class Chat extends javax.swing.JPanel {
     }
     
     public void setUsuari(Usuari usuari) {
-        chat_Title.setUserName(usuari);
+        chat_Title.setUserName(usuari.getUsuari());
         chat_Bottom.setUsuari(usuari);
         chat_Body.clearChat();
     }
@@ -66,8 +77,8 @@ public class Chat extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private componentsExterns.Chat_Body chat_Body;
+    public componentsExterns.Chat_Body chat_Body;
     private componentsExterns.Chat_Bottom chat_Bottom;
-    private componentsExterns.Chat_Title chat_Title;
+    public componentsExterns.Chat_Title chat_Title;
     // End of variables declaration//GEN-END:variables
 }

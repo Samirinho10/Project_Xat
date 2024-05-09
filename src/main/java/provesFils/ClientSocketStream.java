@@ -14,6 +14,10 @@ import vista.Sessio;
 
 public class ClientSocketStream {
     public static String txtUsuariConnectat;
+
+    public static String getTxtUsuariConnectat() {
+        return txtUsuariConnectat;
+    }
     
     public static void main(String[] args){
     

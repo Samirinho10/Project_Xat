@@ -35,8 +35,14 @@
   </Layout>
   <SubComponents>
     <Component class="componentsExterns.Chat_Title" name="chat_Title">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
     </Component>
     <Component class="componentsExterns.Chat_Body" name="chat_Body">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
     </Component>
     <Component class="componentsExterns.Chat_Bottom" name="chat_Bottom">
     </Component>

@@ -1,7 +1,7 @@
 
 package componentsExterns;
 
-import dades.ClientSocketStream;
+import provesFils.ClientSocketStream;
 import dades.Connexio;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -23,6 +23,8 @@ import net.miginfocom.swing.MigLayout;
 
 public class Chat_Bottom extends javax.swing.JPanel {
 
+    private ClientSocketStream client;
+    
     public static JIMSendTextPane txt;
     public static JButton cmd;
             

@@ -3,25 +3,25 @@ package componentsExterns;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 import javax.swing.JPanel;
 
 public class Item_People extends JPanel {
 
+    private String name;
+    
     public Item_People(String name) {
+        this.name = name;
         initComponents();
         lb.setText(name);
         init();
     }
 
+    public String getName() {
+        return name;
+    }
+
     private void init() {
         addMouseListener(new MouseAdapter() {
-            
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                
-                
-            }
             
             @Override
             public void mouseEntered(MouseEvent me) {
@@ -72,10 +72,7 @@ public class Item_People extends JPanel {
                 .addGap(17, 17, 17)
                 .addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(imageAvatar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(imageAvatar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

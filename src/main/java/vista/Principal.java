@@ -2,12 +2,18 @@ package vista;
 
 import componentsExterns.*;
 import dades.Connexio;
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.BoxLayout;
+import provesFils.ClientSocketStream;
 
 //jcalendar 1.4 jar download
 public class Principal extends javax.swing.JFrame {
 
+    private ClientSocketStream client;
+    
     public Principal() {
         initComponents();
         init();
@@ -207,15 +213,38 @@ public class Principal extends javax.swing.JFrame {
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
 
         List<String> llistaUsuaris = Connexio.obtenirLlistatUsuaris();
-        for (String usuario : llistaUsuaris) {
-            Item_People itemPeople = new Item_People(usuario);
+        for (String usuari : llistaUsuaris) {
+            Item_People itemPeople = new Item_People(usuari);
             menuList.add(itemPeople);
             itemPeople.setBounds(0, menuList.getComponentCount() * 50, 216, 10);
+            
+            itemPeople.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    chat.chat_Title.setUserName(usuari);
+                    chat.chat_Body.clearChat();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {}
+
+                @Override
+                public void mouseReleased(MouseEvent e) {}
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    setBackground(new Color(242, 242, 242));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    setBackground(new Color(230, 230, 230));
+                }
+            });
         }
 
         refreshMenuList();
     }
-
 
     private void mostrarUsuaris() {
         menuList.removeAll();
@@ -224,6 +253,29 @@ public class Principal extends javax.swing.JFrame {
             Item_People itemPeople = new Item_People("Grup");
             menuList.add(itemPeople);
             itemPeople.setBounds(0, i * 50, 216, 50);
+            
+            itemPeople.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    chat.chat_Title.setUserName("Grup");
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {}
+
+                @Override
+                public void mouseReleased(MouseEvent e) {}
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    setBackground(new Color(242, 242, 242));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    setBackground(new Color(230, 230, 230));
+                }
+            });
         }
         refreshMenuList();
     }

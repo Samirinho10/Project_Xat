@@ -15,14 +15,14 @@ public class Chat_Title extends javax.swing.JPanel {
         initComponents();
     }
     
-    public void setUserName(Usuari usuari) {
-        this.usuari = usuari;
-        lblUsuari.setText(usuari.getUsuari());
-        if (usuari.getEstat() == "actiu") {
-            estatActiu();
-        } else {
-            setEstatText("Desconnectat");
-        }
+    public void setUserName(String usuari) {
+        lblUsuari.setText(usuari);
+        
+//        if (usuari.getEstat() == "actiu") {
+//            estatActiu();
+//        } else {
+//            setEstatText("Desconnectat");
+//        }
     }
 
     
@@ -48,11 +48,11 @@ public class Chat_Title extends javax.swing.JPanel {
 
         lblUsuari.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblUsuari.setForeground(new java.awt.Color(63, 63, 63));
-        lblUsuari.setText("Grup");
+        lblUsuari.setText("Usuari");
         layer.add(lblUsuari);
 
         lblStatus.setForeground(new java.awt.Color(42, 145, 61));
-        lblStatus.setText("Els membres del grup et veuran connectat");
+        lblStatus.setText("Estat");
         layer.add(lblStatus);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
