@@ -1,10 +1,13 @@
 
 package provesFils;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import vista.Principal;
 import vista.Sessio;
 
@@ -15,12 +18,22 @@ public class ClientSocketStream {
     public static void main(String[] args){
     
         try {
+            
             // Creant Socket client per connectar-nos al servidor
-            Socket cs = new Socket("localhost", 5050);
+            String host = "localhost";
+            int port = 5050;
+
+            Socket socket = new Socket(host, port);
 
             // Obtenim els fluxos d'entrada i sortida del socket
-            InputStream is = cs.getInputStream();
-            OutputStream os = cs.getOutputStream();
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+
+            //Generar doble clau	    
+            KeyPairGenerator generadorRSA = KeyPairGenerator.getInstance("RSA");
+            KeyPair clauRSA = generadorRSA.genKeyPair();
+            System.out.println("Generada la clau asimètrica.");
+            byte[] bytesClauPublica = clauRSA.getPublic().getEncoded();
 
             // Mostrar pantalla inici de sessió
             Sessio sessioFrame = new Sessio();
@@ -39,13 +52,30 @@ public class ClientSocketStream {
                 principalFrame.setVisible(true);
                 
                 //Enviem el nostre usuari al servidor
-                os.write(txtUsuariConnectat.getBytes());
+                out.write(txtUsuariConnectat.getBytes());
                 
+                //Enviem la nostra clau pública
+                out.write(bytesClauPublica);
+                
+                //menu opcions si clico a al grup, si clico sortir o si clico a un altre usuari
                 
             }
 			
         } catch(IOException | InterruptedException e) {
             e.printStackTrace();
+        } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
         }
     }
+    
+    static class RebreMissatges extends Thread {
+ 
+        public RebreMissatges() {
+        
+        }
+
+        public void run() {
+            
+        }
+    }   
 }

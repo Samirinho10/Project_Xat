@@ -220,8 +220,8 @@ public class Principal extends javax.swing.JFrame {
     private void mostrarUsuaris() {
         menuList.removeAll();
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
-        for (int i = 0; i < 20; i++) {
-            Item_People itemPeople = new Item_People("Usuari " + i);
+        for (int i = 0; i < 1; i++) {
+            Item_People itemPeople = new Item_People("Grup");
             menuList.add(itemPeople);
             itemPeople.setBounds(0, i * 50, 216, 50);
         }
@@ -232,11 +232,11 @@ public class Principal extends javax.swing.JFrame {
         menuList.removeAll();
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
 
-        for (int i = 0; i < 20; i++) {
-            Item_People itemPeople = new Item_People("Missatge " + i);
-            menuList.add(itemPeople);
-            itemPeople.setBounds(0, i * 50, 216, 50);
-        }
+//        for (int i = 0; i < 20; i++) {
+//            Item_People itemPeople = new Item_People("Missatge " + i);
+//            menuList.add(itemPeople);
+//            itemPeople.setBounds(0, i * 50, 216, 50);
+//        }
         refreshMenuList();
     }
 

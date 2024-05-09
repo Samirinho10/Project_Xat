@@ -3,6 +3,7 @@ package componentsExterns;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.JPanel;
 
 public class Item_People extends JPanel {
@@ -15,6 +16,13 @@ public class Item_People extends JPanel {
 
     private void init() {
         addMouseListener(new MouseAdapter() {
+            
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                
+                
+            }
+            
             @Override
             public void mouseEntered(MouseEvent me) {
                 setBackground(new Color(242, 242, 242));
