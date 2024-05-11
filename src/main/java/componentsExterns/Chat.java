@@ -3,7 +3,7 @@ package componentsExterns;
 
 import model.Missatges;
 import model.Usuari;
-import provesFils.ClientSocketStream;
+import dades.ClientSocketStream;
 
 public class Chat extends javax.swing.JPanel {
     

@@ -1,30 +1,50 @@
+
 package dades;
 
-import componentsExterns.Chat_Bottom;
+import static componentsExterns.Chat_Bottom.txt;
+import componentsExterns.PublicEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import model.Missatges;
+import model.Usuari;
 import vista.Principal;
 import vista.Sessio;
+import static componentsExterns.Chat_Bottom.botoEnviar;
 
 
 public class ClientSocketStream {
     public static String txtUsuariConnectat;
-    public static Scanner teclat = new Scanner(System.in);
-	
+
+    public static String getTxtUsuariConnectat() {
+        return txtUsuariConnectat;
+    }
+    
     public static void main(String[] args){
     
         try {
+            
             // Creant Socket client per connectar-nos al servidor
-            Socket cs = new Socket("localhost", 5050);
+            String host = "localhost";
+            int port = 5050;
+
+            Socket socket = new Socket(host, port);
 
             // Obtenim els fluxos d'entrada i sortida del socket
-            InputStream is = cs.getInputStream();
-            OutputStream os = cs.getOutputStream();
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+
+            //Generar doble clau	    
+            KeyPairGenerator generadorRSA = KeyPairGenerator.getInstance("RSA");
+            KeyPair clauRSA = generadorRSA.genKeyPair();
+            System.out.println("Generada la clau asimètrica.");
+            byte[] bytesClauPublica = clauRSA.getPublic().getEncoded();
 
             // Mostrar pantalla inici de sessió
             Sessio sessioFrame = new Sessio();
@@ -43,82 +63,99 @@ public class ClientSocketStream {
                 principalFrame.setVisible(true);
                 
                 //Enviem el nostre usuari al servidor
-                os.write(txtUsuariConnectat.getBytes());
+                out.write(txtUsuariConnectat.getBytes());
                 
-                //Esperem la llista d'usuaris connectats
-                byte[] llistaUsuarisConnectatsBytes = new byte[1024];
-                int bytesLlegits = is.read(llistaUsuarisConnectatsBytes);
-                String llistaUsuarisString = new String(llistaUsuarisConnectatsBytes, 0, bytesLlegits);
-                String[] llistaUsuaris = llistaUsuarisString.split(",");
+                //Enviem la nostra clau pública
+                out.write(bytesClauPublica);
                 
-                System.out.println("Usuaris actualment connectats:");
-                for (String usuari : llistaUsuaris) {
-                    System.out.println(usuari);
-                }
+                
+                while (true) {
 
-                // fil: llegir missatges del servidor
-                new RebreMissatges(cs, is).start();
+                    botoEnviar.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent ae) {
+                            try {
+                                String text = txt.getText().trim();
+                                Usuari usuari = Connexio.obtenirUsuariPerId(txtUsuariConnectat);
+                                String sala = principalFrame.chat.chat_Title.getUserName();
 
-                // fil: enviar missatges al servidor
-                new EscriureMissatges(os, teclat).start();
+                                Missatges missatge = new Missatges(usuari, sala, text);
+
+                                if (missatge.getIdSala().equals("Grup")) {
+                                    if (!text.equals("")) {
+                                        System.out.println("hola ho guardo a la base de dades");
+                                        out.writeInt("MissatgeGrupal".getBytes().length);
+                                        out.write("MissatgeGrupal".getBytes());
+
+                                        out.writeInt(text.getBytes().length);
+                                        out.write(text.getBytes());
+
+                                        Connexio.guardarMissatges(missatge);
+                                        PublicEvent.getInstance().getEventChat().sendMessage(text);
+
+                                        txt.setText("");
+                                        txt.grabFocus();
+
+                                    } else {
+                                        txt.grabFocus();
+                                    }
+                                } else {
+                                    out.write("MissatgePrivat".getBytes());
+                                    out.writeInt(text.getBytes().length);
+                                    out.write(text.getBytes());
+
+                                    PublicEvent.getInstance().getEventChat().sendMessage(text);
+
+                                    txt.setText("");
+                                    txt.grabFocus();
+                                }
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+
+                    principalFrame.BtnXat.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent ae) {
+                            System.out.println("Recargant llista usuaris connectats");
+
+                        }
+                    }); 
+                
+                    //fil rebre missatges del servidor
+                    new RebreMissatges(socket).start();
+                }  
             }
-			
+
         } catch(IOException | InterruptedException e) {
             e.printStackTrace();
+        } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
         }
     }
-
+    
     static class RebreMissatges extends Thread {
         private Socket socket;
-        private InputStream is;
-
-        public RebreMissatges(Socket socket, InputStream is) {
-            this.socket = socket;
-            this.is = is;
+        
+        public RebreMissatges(Socket socket) {
+           this.socket = socket;
         }
 
         public void run() {
             try {
-                Scanner scanner = new Scanner(is);
-                while (true) {
-                    if (scanner.hasNextLine()) {
-                        String missatge = scanner.nextLine();
-                        System.out.println("Missatge rebut del servidor: " + missatge);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    static class EscriureMissatges extends Thread {
-        private OutputStream os;
-        private Scanner scanner;
-
-        public EscriureMissatges(OutputStream os, Scanner scanner) {
-            this.os = os;
-            this.scanner = scanner;
-        }
-
-        public void run() {
-            try {
-                while (true) {
-                    
-                    if (scanner.hasNextLine()) {
-                        String missatge = scanner.nextLine();
-                        os.write(missatge.getBytes());
-                        os.write('\n');
-                    }
-                    
-                    Thread.sleep(100);
-                }
                 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ClientSocketStream.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+                
+                byte[] bytesMissatge = new byte[in.readInt()];
+                in.readFully(bytesMissatge);
+                System.out.println("Missatge rebut: " + new String(bytesMissatge));
+                
+                //new RebreMissatges(socket).start();
+                
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } 
         }
-    }
+    }   
 }

@@ -25,6 +25,9 @@ public class Chat_Title extends javax.swing.JPanel {
 //        }
     }
 
+    public String getUserName() {
+        return lblUsuari.getText();
+    }
     
     private void estatActiu() {
         lblStatus.setText("En línea");

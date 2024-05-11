@@ -1,7 +1,7 @@
 
 package componentsExterns;
 
-import provesFils.ClientSocketStream;
+import dades.ClientSocketStream;
 import dades.Connexio;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -26,7 +26,7 @@ public class Chat_Bottom extends javax.swing.JPanel {
     private ClientSocketStream client;
     
     public static JIMSendTextPane txt;
-    public static JButton cmd;
+    public static JButton botoEnviar;
             
     private Usuari usuari;
     
@@ -65,37 +65,37 @@ public class Chat_Bottom extends javax.swing.JPanel {
         panel.setLayout(new MigLayout("filly", "0[]0", "0[bottom]0"));
         panel.setPreferredSize(new Dimension(30, 28));
         panel.setBackground(Color.WHITE);
-        cmd = new JButton();
-        cmd.setBorder(null);
-        cmd.setContentAreaFilled(false);
-        cmd.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        cmd.setIcon(new ImageIcon(getClass().getResource("/send.png")));
-        cmd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                String text = txt.getText().trim();
-                String usuariConnectat = ClientSocketStream.txtUsuariConnectat; //agafem l'usuari que ha iniciat sessió
-                Usuari usuari = Connexio.obtenirUsuariPerId(usuariConnectat);
-                String sala = "grup";
-                
-                Missatges missatge = new Missatges (usuari, sala, text);
-                
-                if (!text.equals("")) {
-                    Connexio.guardarMissatges(missatge);
-                    PublicEvent.getInstance().getEventChat().sendMessage(text);
-                    
-                    //enviar missatge al client
-                    
-                    
-                    txt.setText("");
-                    txt.grabFocus();
-                    refresh();
-                } else {
-                    txt.grabFocus();
-                }
-            }
-        });
-        panel.add(cmd);
+        botoEnviar = new JButton();
+        botoEnviar.setBorder(null);
+        botoEnviar.setContentAreaFilled(false);
+        botoEnviar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        botoEnviar.setIcon(new ImageIcon(getClass().getResource("/send.png")));
+//        botoEnviar.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                String text = txt.getText().trim();
+//                String usuariConnectat = ClientSocketStream.txtUsuariConnectat; //agafem l'usuari que ha iniciat sessió
+//                Usuari usuari = Connexio.obtenirUsuariPerId(usuariConnectat);
+//                String sala = "grup";
+//                
+//                Missatges missatge = new Missatges (usuari, sala, text);
+//                
+//                if (!text.equals("")) {
+//                    Connexio.guardarMissatges(missatge);
+//                    PublicEvent.getInstance().getEventChat().sendMessage(text);
+//                    
+//                    //enviar missatge al client
+//                    
+//                    
+//                    txt.setText("");
+//                    txt.grabFocus();
+//                    refresh();
+//                } else {
+//                    txt.grabFocus();
+//                }
+//            }
+//        });
+        panel.add(botoEnviar);
         add(panel);
     }
     

@@ -7,13 +7,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.BoxLayout;
-import provesFils.ClientSocketStream;
+import dades.ClientSocketStream;
 
-//jcalendar 1.4 jar download
+
 public class Principal extends javax.swing.JFrame {
 
-    private ClientSocketStream client;
-    
     public Principal() {
         initComponents();
         init();
@@ -258,6 +256,7 @@ public class Principal extends javax.swing.JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     chat.chat_Title.setUserName("Grup");
+                    chat.chat_Body.clearChat();
                 }
 
                 @Override
@@ -298,14 +297,14 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private componentsExterns.MenuButton BtnHistorial;
-    private componentsExterns.MenuButton BtnUsuaris;
-    private componentsExterns.MenuButton BtnXat;
-    private javax.swing.JPanel Home;
-    private javax.swing.JPanel Menu;
-    private javax.swing.JLayeredPane MenuTop;
-    private javax.swing.JLayeredPane body;
-    private componentsExterns.Chat chat;
+    public componentsExterns.MenuButton BtnHistorial;
+    public componentsExterns.MenuButton BtnUsuaris;
+    public componentsExterns.MenuButton BtnXat;
+    public javax.swing.JPanel Home;
+    public javax.swing.JPanel Menu;
+    public javax.swing.JLayeredPane MenuTop;
+    public javax.swing.JLayeredPane body;
+    public componentsExterns.Chat chat;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
