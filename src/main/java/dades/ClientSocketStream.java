@@ -172,6 +172,7 @@ public class ClientSocketStream {
 
         public void run() {
             System.out.println("rebo missatges");
+            
             try {
                 
                 DataInputStream in = new DataInputStream(socket.getInputStream());

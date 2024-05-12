@@ -1,7 +1,6 @@
 
 package dades;
 
-import componentsExterns.Chat;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Usuari;
-import vista.Principal;
 
 public class ServidorSocketStream {
     
