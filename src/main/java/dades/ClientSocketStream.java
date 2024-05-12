@@ -68,64 +68,73 @@ public class ClientSocketStream {
                 //Enviem la nostra clau pública
                 out.write(bytesClauPublica);
                 
-                
-                while (true) {
+                botoEnviar.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        try {
+                            String text = txt.getText().trim();
+                            Usuari usuari = Connexio.obtenirUsuariPerId(txtUsuariConnectat);
+                            String sala = principalFrame.chat.chat_Title.getUserName();
 
-                    botoEnviar.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent ae) {
-                            try {
-                                String text = txt.getText().trim();
-                                Usuari usuari = Connexio.obtenirUsuariPerId(txtUsuariConnectat);
-                                String sala = principalFrame.chat.chat_Title.getUserName();
+                            Missatges missatge = new Missatges(usuari, sala, text);
 
-                                Missatges missatge = new Missatges(usuari, sala, text);
+                            System.out.println("estic fent clic");
 
-                                if (missatge.getIdSala().equals("Grup")) {
-                                    if (!text.equals("")) {
-                                        System.out.println("hola ho guardo a la base de dades");
-                                        out.writeInt("MissatgeGrupal".getBytes().length);
-                                        out.write("MissatgeGrupal".getBytes());
+                            
+                            if (missatge.getIdSala().equals("Grup")) {
+                                if (!text.equals("")) {
+                                    System.out.println("hola ho guardo a la base de dades");
+                                    out.writeInt("MissatgeGrupal".getBytes().length);
+                                    out.write("MissatgeGrupal".getBytes());
 
-                                        out.writeInt(text.getBytes().length);
-                                        out.write(text.getBytes());
-
-                                        Connexio.guardarMissatges(missatge);
-                                        PublicEvent.getInstance().getEventChat().sendMessage(text);
-
-                                        txt.setText("");
-                                        txt.grabFocus();
-
-                                    } else {
-                                        txt.grabFocus();
-                                    }
-                                } else {
-                                    out.write("MissatgePrivat".getBytes());
                                     out.writeInt(text.getBytes().length);
                                     out.write(text.getBytes());
-
+                                    System.out.println("no funciona o ");
+                                    Connexio.guardarMissatges(missatge);
                                     PublicEvent.getInstance().getEventChat().sendMessage(text);
 
                                     txt.setText("");
                                     txt.grabFocus();
+
+                                } else {
+                                    txt.grabFocus();
                                 }
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
+                            } else {
+                                System.out.println("he entrat al else");
+                                out.write("MissatgePrivat".getBytes());
+                                out.writeInt(text.getBytes().length);
+                                out.write(text.getBytes());
+
+                                PublicEvent.getInstance().getEventChat().sendMessage(text);
+
+                                txt.setText("");
+                                txt.grabFocus();
                             }
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
                         }
-                    });
+                    }
+                });
 
-                    principalFrame.BtnXat.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent ae) {
-                            System.out.println("Recargant llista usuaris connectats");
+                principalFrame.BtnXat.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        System.out.println("Recargant llista usuaris connectats");
 
-                        }
-                    }); 
+                    }
+                }); 
                 
-                    //fil rebre missatges del servidor
-                    new RebreMissatges(socket).start();
-                }  
+                while (true) {
+                    if (in.available() > 0) {
+                        new RebreMissatges(socket).start();
+                        System.out.println("he entrat");
+                    }
+
+                    // Pausa para evitar un uso excesivo de la CPU
+                    Thread.sleep(100);
+                }
+
+                
             }
 
         } catch(IOException | InterruptedException e) {
@@ -150,8 +159,9 @@ public class ClientSocketStream {
                 byte[] bytesMissatge = new byte[in.readInt()];
                 in.readFully(bytesMissatge);
                 System.out.println("Missatge rebut: " + new String(bytesMissatge));
+
                 
-                //new RebreMissatges(socket).start();
+                new RebreMissatges(socket).start();
                 
             } catch (IOException ex) {
                 ex.printStackTrace();

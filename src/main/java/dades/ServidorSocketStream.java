@@ -54,10 +54,10 @@ public class ServidorSocketStream {
                 Usuari u = new Usuari (usuari, newSocket, clauPublicaClient);
                 clientsConnectats.add(u);
                 
-                if (clientsConnectats.size() > 1) {
-                    new EnviarMissatgeUsuariConnectat(clientsConnectats, u).start();
-                    new EnviarMissatgeUsuariDesconnectat(clientsConnectats, u).start();
-                }
+//                if (clientsConnectats.size() > 1) {
+//                    new EnviarMissatgeUsuariConnectat(clientsConnectats, u).start();
+//                    new EnviarMissatgeUsuariDesconnectat(clientsConnectats, u).start();
+//                }
                 
                 System.out.println("Actualment hi ha connectats els usuaris següents:");
                 for (Usuari client : clientsConnectats) {
@@ -193,6 +193,8 @@ public class ServidorSocketStream {
                 } else if (missatgeOpcio.equals("desconnectar")) {
                     
                 }
+                
+                new RebreMissatges(clientsConnectats, socket).start();
                 
             } catch (IOException ex) {
                 ex.printStackTrace();
