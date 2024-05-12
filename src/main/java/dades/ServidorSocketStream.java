@@ -1,6 +1,7 @@
 
 package dades;
 
+import componentsExterns.Chat;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Usuari;
+import vista.Principal;
 
 public class ServidorSocketStream {
     
@@ -163,9 +165,11 @@ public class ServidorSocketStream {
                 in.readFully(missatgeClient);
                 System.out.println("He rebut el missatge: " + new String(missatgeClient));
                 
-                byte[] usuariRemitent = new byte[in.readInt()];
-                in.readFully(usuariRemitent);
-                System.out.println("He rebut el missatge de: " + new String(usuariRemitent));
+                byte[] usuariRemitentBytes = new byte[in.readInt()];
+                in.readFully(usuariRemitentBytes);
+                String usuariRemitent = new String(usuariRemitentBytes).trim();
+                        
+                System.out.println("He rebut el missatge de: " + usuariRemitent);
                 
                 if (missatgeOpcio.equals("MissatgeGrupal")) {
                     System.out.println("He entrat al condicionat grup");
@@ -178,8 +182,8 @@ public class ServidorSocketStream {
                             out.writeInt(missatgeClient.length);
                             out.write(missatgeClient);
                             
-                            out.writeInt(usuariRemitent.length);
-                            out.write(usuariRemitent);
+                            out.writeInt(usuariRemitentBytes.length);
+                            out.write(usuariRemitentBytes);
 
                             out.flush();
                             
@@ -194,6 +198,39 @@ public class ServidorSocketStream {
                     }
                 
                 } else if (missatgeOpcio.equals("MissatgePrivat")) {
+                    
+                    System.out.println("He entrat al condicionat privat");
+                    
+                    byte[] usuariDestinatariBytes = new byte[in.readInt()];
+                    in.readFully(usuariDestinatariBytes);
+                    String usuariDestinatari = new String(usuariDestinatariBytes).trim();
+                    
+                    System.out.println("Envio el missatge a: " + usuariDestinatari);
+                    
+                    for (Usuari usuari : clientsConnectats) {
+                        
+                        if (usuari.getUsuari().equals(usuariDestinatari) || usuari.getUsuari().equals(usuariRemitent)) {
+                            try {
+                                Socket socketUsuariDesti = usuari.getSocket();
+                                DataOutputStream out = new DataOutputStream(socketUsuariDesti.getOutputStream());
+
+                                out.writeInt(missatgeClient.length);
+                                out.write(missatgeClient);
+
+                                out.writeInt(usuariRemitentBytes.length);
+                                out.write(usuariRemitentBytes);
+
+                                out.flush();
+
+                                System.out.println("he enviat el missatge: " + new String(missatgeClient) + " a l'usuari " + usuari.getUsuari());
+                                System.out.println(" hola hola");
+                            } catch (IOException e) {
+                                System.err.println("Error a l'enviar el missatge a l'usuari: " + usuari.getUsuari());
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    
                     
                 } else if (missatgeOpcio.equals("actualitzarUsuarisConnectats")) {
                     

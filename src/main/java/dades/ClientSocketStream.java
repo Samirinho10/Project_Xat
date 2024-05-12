@@ -85,14 +85,14 @@ public class ClientSocketStream {
                             if (missatge.getIdSala().equals("Grup")) {
                                 if (!text.equals("")) {
                                     System.out.println("hola ho guardo a la base de dades");
+                                    
                                     out.writeInt("MissatgeGrupal".getBytes().length);
                                     out.write("MissatgeGrupal".getBytes());
                                     
                                     out.writeInt(text.getBytes().length);
                                     out.write(text.getBytes());
-                                    System.out.println("no funciona o ");
+                                    
                                     Connexio.guardarMissatges(missatge);
-                                    //PublicEvent.getInstance().getEventChat().sendMessage(text);
                                     
                                     String usuariRemitent = txtUsuariConnectat;
                                     out.writeInt(usuariRemitent.getBytes().length);
@@ -106,14 +106,31 @@ public class ClientSocketStream {
                                 }
                             } else {
                                 System.out.println("he entrat al else");
-                                out.write("MissatgePrivat".getBytes());
-                                out.writeInt(text.getBytes().length);
-                                out.write(text.getBytes());
+                                
+                                if (!text.equals("")) {
+                                    out.writeInt("MissatgePrivat".getBytes().length);
+                                    out.write("MissatgePrivat".getBytes());
+                                    
+                                    out.writeInt(text.getBytes().length);
+                                    out.write(text.getBytes());
+                                    
+                                    String URemitent = txtUsuariConnectat;
+                                    out.writeInt(URemitent.getBytes().length);
+                                    out.write(URemitent.getBytes());
 
-                                PublicEvent.getInstance().getEventChat().sendMessage(text);
+                                    Usuari Udestinatari = obtenirUsuariPerId(sala);
+                                    out.writeInt(Udestinatari.getUsuari().getBytes().length);
+                                    out.write(Udestinatari.getUsuari().getBytes());
+                                    
+                                    txt.setText("");
+                                    txt.grabFocus();
+                                    
+                                    System.out.println("soc el client, ho he fet tot");
 
-                                txt.setText("");
-                                txt.grabFocus();
+                                } else {
+                                    txt.grabFocus();
+                                }
+
                             }
                         } catch (IOException ex) {
                             ex.printStackTrace();
@@ -136,9 +153,7 @@ public class ClientSocketStream {
                     }
 
                     Thread.sleep(100);
-                }
-
-                
+                } 
             }
 
         } catch(IOException | InterruptedException e) {
@@ -156,6 +171,7 @@ public class ClientSocketStream {
         }
 
         public void run() {
+            System.out.println("rebo missatges");
             try {
                 
                 DataInputStream in = new DataInputStream(socket.getInputStream());
