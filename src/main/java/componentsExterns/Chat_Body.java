@@ -21,7 +21,7 @@ public class Chat_Body extends javax.swing.JPanel {
     }
 
     public void addItemLeft(String text, String usuari) {
-        Chat_Left_With_Profile item = new Chat_Left_With_Profile();
+        Chat_Left item = new Chat_Left();
         item.setText(text);
         item.setUserProfile(usuari);
         body.add(item, "wrap, w 100::80%");

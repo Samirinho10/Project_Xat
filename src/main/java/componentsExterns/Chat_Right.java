@@ -2,6 +2,8 @@
 package componentsExterns;
 
 import java.awt.Color;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Chat_Right extends javax.swing.JLayeredPane {
 
@@ -12,7 +14,12 @@ public class Chat_Right extends javax.swing.JLayeredPane {
 
     public void setText(String text) {
         txt.setText(text);
-        txt.setTime("15:22PM");
+        
+        LocalTime horaActual = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        String horaFormatejada = horaActual.format(formatter);
+        txt.setTime(horaFormatejada);
+        
         txt.seen();
     }
 

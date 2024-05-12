@@ -2,6 +2,8 @@
 package componentsExterns;
 
 import java.awt.Color;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Chat_Left extends javax.swing.JLayeredPane {
 
@@ -9,10 +11,18 @@ public class Chat_Left extends javax.swing.JLayeredPane {
         initComponents();
         txt.setBackground(new Color(242, 242, 242));
     }
+    
+    public void setUserProfile(String usuari) {
+        txt.setUserProfile(usuari);
+    }
 
     public void setText(String text) {
         txt.setText(text);
-        txt.setTime("15:22PM");
+        
+        LocalTime horaActual = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        String horaFormatejada = horaActual.format(formatter);
+        txt.setTime(horaFormatejada);
     }
 
     @SuppressWarnings("unchecked")
@@ -20,6 +30,8 @@ public class Chat_Left extends javax.swing.JLayeredPane {
     private void initComponents() {
 
         txt = new componentsExterns.Chat_Item();
+
+        setLayer(txt, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
