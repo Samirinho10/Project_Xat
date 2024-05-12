@@ -163,6 +163,10 @@ public class ServidorSocketStream {
                 in.readFully(missatgeClient);
                 System.out.println("He rebut el missatge: " + new String(missatgeClient));
                 
+                byte[] usuariRemitent = new byte[in.readInt()];
+                in.readFully(usuariRemitent);
+                System.out.println("He rebut el missatge de: " + new String(usuariRemitent));
+                
                 if (missatgeOpcio.equals("MissatgeGrupal")) {
                     System.out.println("He entrat al condicionat grup");
                     
@@ -173,6 +177,9 @@ public class ServidorSocketStream {
 
                             out.writeInt(missatgeClient.length);
                             out.write(missatgeClient);
+                            
+                            out.writeInt(usuariRemitent.length);
+                            out.write(usuariRemitent);
 
                             out.flush();
                             

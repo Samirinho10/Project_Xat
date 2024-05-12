@@ -17,6 +17,7 @@ import model.Usuari;
 import vista.Principal;
 import vista.Sessio;
 import static componentsExterns.Chat_Bottom.botoEnviar;
+import static dades.Connexio.obtenirUsuariPerId;
 
 
 public class ClientSocketStream {
@@ -86,12 +87,16 @@ public class ClientSocketStream {
                                     System.out.println("hola ho guardo a la base de dades");
                                     out.writeInt("MissatgeGrupal".getBytes().length);
                                     out.write("MissatgeGrupal".getBytes());
-
+                                    
                                     out.writeInt(text.getBytes().length);
                                     out.write(text.getBytes());
                                     System.out.println("no funciona o ");
                                     Connexio.guardarMissatges(missatge);
-                                    PublicEvent.getInstance().getEventChat().sendMessage(text);
+                                    //PublicEvent.getInstance().getEventChat().sendMessage(text);
+                                    
+                                    String usuariRemitent = txtUsuariConnectat;
+                                    out.writeInt(usuariRemitent.getBytes().length);
+                                    out.write(usuariRemitent.getBytes());
 
                                     txt.setText("");
                                     txt.grabFocus();
@@ -130,7 +135,6 @@ public class ClientSocketStream {
                         System.out.println("he entrat");
                     }
 
-                    // Pausa para evitar un uso excesivo de la CPU
                     Thread.sleep(100);
                 }
 
@@ -159,7 +163,18 @@ public class ClientSocketStream {
                 byte[] bytesMissatge = new byte[in.readInt()];
                 in.readFully(bytesMissatge);
                 System.out.println("Missatge rebut: " + new String(bytesMissatge));
-
+                
+                byte[] bytesUsuariRemitent = new byte[in.readInt()];
+                in.readFully(bytesUsuariRemitent);
+                System.out.println("Missatge rebut de: " + new String(bytesUsuariRemitent));
+                
+                Usuari u = obtenirUsuariPerId(new String(bytesUsuariRemitent));
+                
+                if (u.getUsuari().equals(txtUsuariConnectat)) {
+                    PublicEvent.getInstance().getEventChat().sendMessage(new String(bytesMissatge));
+                } else {
+                    PublicEvent.getInstance().getEventChat().receiveMessage(new String(bytesMissatge), u);
+                }
                 
                 new RebreMissatges(socket).start();
                 

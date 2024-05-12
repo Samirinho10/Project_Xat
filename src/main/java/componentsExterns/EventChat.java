@@ -7,6 +7,6 @@ public interface EventChat {
 
     public void sendMessage(String missatge);
                 
-    public void receiveMessage(Missatges missatge, Usuari usuari);
+    public void receiveMessage(String missatge, Usuari usuari);
                
 }

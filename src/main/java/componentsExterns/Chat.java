@@ -28,12 +28,8 @@ public class Chat extends javax.swing.JPanel {
                 chat_Body.addItemRight(missatge);
             }
 
-            public void receiveMessage(Missatges missatge, Usuari usuari) {
-                if (chat_Title.getUsuari().equals(missatge.getIdUsuari())) {
-                    chat_Body.addItemLeft(missatge.getMissatge(), usuari.getUsuari());
-                } else if (chat_Title.getUsuari().equals("Grup")) {
-                    chat_Body.addItemLeft(missatge.getMissatge(), usuari.getUsuari());
-                }
+            public void receiveMessage(String missatge, Usuari usuari) {
+                chat_Body.addItemLeft(missatge, usuari.getUsuari());
             }
         });
     }
