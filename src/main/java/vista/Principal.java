@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.BoxLayout;
 import dades.ClientSocketStream;
+import static java.lang.System.exit;
 
 
 public class Principal extends javax.swing.JFrame {
@@ -33,8 +34,7 @@ public class Principal extends javax.swing.JFrame {
         chat = new componentsExterns.Chat();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -140,13 +140,16 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenu3.setText("Sortir");
-        jMenu1.add(jMenu3);
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem4.setText("Sortir");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Navega");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -190,6 +193,10 @@ public class Principal extends javax.swing.JFrame {
             mostrarXat();
         }
     }//GEN-LAST:event_BtnXatActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        exit(0);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void init() {
         //editar scroll bar
@@ -306,9 +313,8 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JLayeredPane body;
     public componentsExterns.Chat chat;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JLayeredPane menuList;
     private javax.swing.JScrollPane sp;
     // End of variables declaration//GEN-END:variables
