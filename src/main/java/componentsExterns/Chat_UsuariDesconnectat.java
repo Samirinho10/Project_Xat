@@ -10,8 +10,8 @@ public class Chat_UsuariDesconnectat extends javax.swing.JLayeredPane {
         initComponents();
     }
     
-    public void setUsuariDesconnectat(Usuari usuari) {
-        lblDesconn.setText(usuari.getUsuari() + " s'ha desconnectat");
+    public void setUsuariDesconnectat(String usuari) {
+        lblDesconn.setText(usuari + " s'ha desconnectat");
     }
 
     @SuppressWarnings("unchecked")

@@ -31,6 +31,17 @@ public class Chat extends javax.swing.JPanel {
             public void receiveMessage(String missatge, Usuari usuari) {
                 chat_Body.addItemLeft(missatge, usuari.getUsuari());
             }
+
+            @Override
+            public void userConnected(String usuari) {
+                chat_Body.addUserConnected(usuari);
+            }
+
+            @Override
+            public void userDisconnected(String usuari) {
+                chat_Body.addUserDisconnected(usuari);
+            }
+
         });
     }
     

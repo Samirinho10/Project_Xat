@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import javax.swing.JScrollBar;
+import model.Usuari;
 import net.miginfocom.swing.MigLayout;
 
 public class Chat_Body extends javax.swing.JPanel {
@@ -43,6 +44,22 @@ public class Chat_Body extends javax.swing.JPanel {
     public void addData(String data){
         Chat_Date item = new Chat_Date();
         item.setData(data);
+        body.add(item, "wrap, al center");
+        body.repaint();
+        body.revalidate();
+    }
+    
+    public void addUserConnected(String usuari){
+        Chat_UsuariConnectat item = new Chat_UsuariConnectat();
+        item.setUsuariConnectat(usuari);
+        body.add(item, "wrap, al center");
+        body.repaint();
+        body.revalidate();
+    }
+    
+    public void addUserDisconnected(String usuari){
+        Chat_UsuariDesconnectat item = new Chat_UsuariDesconnectat();
+        item.setUsuariDesconnectat(usuari);
         body.add(item, "wrap, al center");
         body.repaint();
         body.revalidate();

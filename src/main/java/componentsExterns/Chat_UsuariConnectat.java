@@ -10,8 +10,8 @@ public class Chat_UsuariConnectat extends javax.swing.JLayeredPane {
         initComponents();
     }
     
-    public void setUsuariConnectat(Usuari usuari) {
-        lblConn.setText(usuari.getUsuari() + " s'ha connectat");
+    public void setUsuariConnectat(String usuari) {
+        lblConn.setText(usuari + " s'ha connectat");
     }
 
     @SuppressWarnings("unchecked")
