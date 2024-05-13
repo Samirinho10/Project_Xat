@@ -52,7 +52,11 @@ public class ServidorSocketStream {
                 X509EncodedKeySpec x509Spec = new X509EncodedKeySpec(clauPublicaBytes);
                 PublicKey clauPublicaClient = kf.generatePublic(x509Spec);
                 
-                Usuari u = new Usuari (usuari, newSocket, clauPublicaClient);
+                Usuari u = new Usuari (usuari, newSocket, clauPublicaClient, true);
+                
+                //guardem a la base de dades que l'usuari està actiu
+                dades.Connexio.actualitzarEstatUsuari(u, true);
+                
                 clientsConnectats.add(u);
                 
                 if (clientsConnectats.size() > 1) {
@@ -75,9 +79,15 @@ public class ServidorSocketStream {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(ServidorSocketStream.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } catch (InvalidKeySpecException ex) {
-            Logger.getLogger(ServidorSocketStream.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } finally {
+            try {
+                dades.Connexio.posarTotsElsUsuarisInactius();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     

@@ -46,7 +46,7 @@ public class Chat extends javax.swing.JPanel {
     }
     
     public void setUsuari(Usuari usuari) {
-        chat_Title.setUserName(usuari.getUsuari());
+        chat_Title.setUserName(usuari);
         chat_Bottom.setUsuari(usuari);
         chat_Body.clearChat();
     }

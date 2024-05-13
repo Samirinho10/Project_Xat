@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
+import model.Usuari;
 
 public class Item_People extends JPanel {
 
@@ -15,9 +16,28 @@ public class Item_People extends JPanel {
         lb.setText(name);
         init();
     }
+    
+    public Item_People(Usuari usuari) {
+        this.name = usuari.getUsuari();
+        initComponents();
+        lb.setText(usuari.getUsuari());
+        
+        boolean valorEstat = dades.Connexio.veureEstatSegonsUsuari(usuari.getUsuari());
+        
+        activeStatus.setActive(valorEstat);
+        init();
+    }
 
     public String getName() {
         return name;
+    }
+    
+    public void activarEstat() {
+        activeStatus.setActive(true);
+    }
+    
+    public void desactivarEstat() {
+        activeStatus.setActive(false);
     }
 
     private void init() {
@@ -41,7 +61,7 @@ public class Item_People extends JPanel {
 
         lb = new javax.swing.JLabel();
         imageAvatar1 = new componentsExterns.ImageAvatar();
-        activeStatus1 = new componentsExterns.ActiveStatus();
+        activeStatus = new componentsExterns.ActiveStatus();
 
         setBackground(new java.awt.Color(229, 229, 229));
         setMaximumSize(new java.awt.Dimension(245, 60));
@@ -66,7 +86,7 @@ public class Item_People extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lb, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(activeStatus1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(activeStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(113, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -75,14 +95,14 @@ public class Item_People extends JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(activeStatus1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(activeStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private componentsExterns.ActiveStatus activeStatus1;
+    private componentsExterns.ActiveStatus activeStatus;
     private componentsExterns.ImageAvatar imageAvatar1;
     private javax.swing.JLabel lb;
     // End of variables declaration//GEN-END:variables

@@ -12,11 +12,17 @@ public class Usuari {
     private Socket socket;
     private PublicKey clauPublica;
 
-    public Usuari(String usuari, String contrasenya, boolean estat, Socket socket) {
+    public Usuari(String usuari, String contrasenya, Socket socket) {
         this.usuari = usuari;
         this.contrasenya = contrasenya;
-        this.estat = estat;
         this.socket = socket;
+    }
+    
+    public Usuari(String usuari, Socket socket, PublicKey clauPublica, boolean estat) {
+        this.usuari = usuari;
+        this.socket = socket;
+        this.clauPublica = clauPublica;
+        this.estat = estat;
     }
     
     public Usuari(String usuari, Socket socket, PublicKey clauPublica) {

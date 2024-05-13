@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import dades.ClientSocketStream;
 import static java.lang.System.exit;
+import model.Usuari;
 
 
 public class Principal extends javax.swing.JFrame {
@@ -48,6 +49,7 @@ public class Principal extends javax.swing.JFrame {
 
         BtnXat.setBackground(new java.awt.Color(229, 229, 229));
         BtnXat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/message.png")));
+        BtnXat.setToolTipText("Fes clic per actualitzar l'estat dels usuaris");
         BtnXat.setIconSelected(new javax.swing.ImageIcon(getClass().getResource("/message_selected.png")));
         BtnXat.setIconSimple(new javax.swing.ImageIcon(getClass().getResource("/message.png")));
         BtnXat.setSelected(true);
@@ -219,14 +221,17 @@ public class Principal extends javax.swing.JFrame {
 
         List<String> llistaUsuaris = Connexio.obtenirLlistatUsuaris();
         for (String usuari : llistaUsuaris) {
-            Item_People itemPeople = new Item_People(usuari);
+            
+            Usuari u = dades.Connexio.obtenirUsuariPerId(usuari);
+            
+            Item_People itemPeople = new Item_People(u);
             menuList.add(itemPeople);
             itemPeople.setBounds(0, menuList.getComponentCount() * 50, 216, 10);
             
             itemPeople.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    chat.chat_Title.setUserName(usuari);
+                    chat.chat_Title.setUserName(u);
                     chat.chat_Body.clearChat();
                 }
 

@@ -15,14 +15,22 @@ public class Chat_Title extends javax.swing.JPanel {
         initComponents();
     }
     
+    public void setUserName(Usuari usuari) {
+        lblUsuari.setText(usuari.getUsuari());
+        
+        usuari = dades.Connexio.obtenirUsuariPerId(usuari.getUsuari());
+        boolean valorEstat = dades.Connexio.veureEstatSegonsUsuari(usuari.getUsuari());
+        
+        if (valorEstat == true) {
+            estatActiu();
+        } else {
+            setEstatText("Desconnectat");
+        }
+    }
+    
     public void setUserName(String usuari) {
         lblUsuari.setText(usuari);
-        
-//        if (usuari.getEstat() == "actiu") {
-//            estatActiu();
-//        } else {
-//            setEstatText("Desconnectat");
-//        }
+        lblStatus.setText("");
     }
 
     public String getUserName() {

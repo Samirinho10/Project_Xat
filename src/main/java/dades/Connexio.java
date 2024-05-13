@@ -101,10 +101,10 @@ public class Connexio {
             if (usuariDoc != null) {
                 String id = usuariDoc.getString("_id");
                 String contrasenya = usuariDoc.getString("contrasenya");
-                boolean estat = usuariDoc.getBoolean("estat");
+                //boolean estat = usuariDoc.getBoolean("estat");
                 Socket sc = null;
 
-                return new Usuari(id, contrasenya, estat, sc);
+                return new Usuari(id, contrasenya, sc);
             }
         } catch (Exception e) {
             System.err.println("Error: " + e);
@@ -131,6 +131,53 @@ public class Connexio {
             System.err.println("Error en guardar el missatge: " + e);
         }
     }
+        
+    public static void actualitzarEstatUsuari(Usuari u, boolean valorEstat) {
+        try {
+            String usuari = u.getUsuari();
+            Document filter = new Document("_id", usuari);
+            Document update = new Document("$set", new Document("estat", valorEstat));
+            usuaris.updateOne(filter, update);
+            System.out.println("Estat actualitzat correctament per l'usuari : " + usuari);
+        } catch (Exception e) {
+            System.err.println("Error en actualitzar l'estat: " + e);
+        }
+    }
+    
+    public static void posarTotsElsUsuarisInactius() {
+        try {
+            Document update = new Document("$set", new Document("estat", false));
+            usuaris.updateMany(new Document(), update);
+            System.out.println("S'han posat tots els usuaris a estat desconnectat.");
+        } catch (Exception e) {
+            System.err.println("Error en actualitzar l'estat de tots els usuaris: " + e);
+        }
+    }
+
+    
+    public static boolean veureEstatSegonsUsuari(String usuari) {
+        try {
+            Document usuariDoc = usuaris.find(new Document("_id", usuari)).first();
+
+            if (usuariDoc != null) {
+                Boolean estat = usuariDoc.getBoolean("estat");
+                
+                if (estat != null) {
+                    return estat;
+                }
+                
+            } else {
+                System.err.println("Usuari no trobat a la BBDD.");
+            }
+        } catch (Exception e) {
+            System.err.println("Error en obtenir l'estat: " + e);
+        }
+        
+        return false;
+    }
+
+
+    
     
  
     //encriptar Contrasenya (hash)
