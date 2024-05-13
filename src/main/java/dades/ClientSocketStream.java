@@ -18,10 +18,17 @@ import vista.Principal;
 import vista.Sessio;
 import static componentsExterns.Chat_Bottom.botoEnviar;
 import static dades.Connexio.obtenirUsuariPerId;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class ClientSocketStream {
     public static String txtUsuariConnectat;
+    public static Principal principalFrame;
+    public static List<String> totalUsuarisBBDD;
 
     public static String getTxtUsuariConnectat() {
         return txtUsuariConnectat;
@@ -60,7 +67,7 @@ public class ClientSocketStream {
                 txtUsuariConnectat = sessioFrame.txtUsuari.getText();
                 System.out.println("Soc " + txtUsuariConnectat);
                 
-                Principal principalFrame = new Principal();
+                principalFrame = new Principal();
                 principalFrame.setVisible(true);
                 
                 //Enviem el nostre usuari al servidor
@@ -69,6 +76,7 @@ public class ClientSocketStream {
                 //Enviem la nostra clau pública
                 out.write(bytesClauPublica);
                 
+                //Action listener de quan envio un missatge
                 botoEnviar.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ae) {
@@ -79,9 +87,6 @@ public class ClientSocketStream {
 
                             Missatges missatge = new Missatges(usuari, sala, text);
 
-                            System.out.println("estic fent clic");
-
-                            
                             if (missatge.getIdSala().equals("Grup")) {
                                 if (!text.equals("")) {
                                     System.out.println("hola ho guardo a la base de dades");
@@ -92,11 +97,11 @@ public class ClientSocketStream {
                                     out.writeInt(text.getBytes().length);
                                     out.write(text.getBytes());
                                     
-                                    Connexio.guardarMissatges(missatge);
-                                    
                                     String usuariRemitent = txtUsuariConnectat;
                                     out.writeInt(usuariRemitent.getBytes().length);
                                     out.write(usuariRemitent.getBytes());
+                                    
+                                    Connexio.guardarMissatges(missatge);
 
                                     txt.setText("");
                                     txt.grabFocus();
@@ -105,7 +110,7 @@ public class ClientSocketStream {
                                     txt.grabFocus();
                                 }
                             } else {
-                                System.out.println("he entrat al else");
+                                System.out.println("he entrat al else de missatge privat");
                                 
                                 if (!text.equals("")) {
                                     out.writeInt("MissatgePrivat".getBytes().length);
@@ -130,8 +135,8 @@ public class ClientSocketStream {
                                 } else {
                                     txt.grabFocus();
                                 }
-
                             }
+                            
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -141,15 +146,31 @@ public class ClientSocketStream {
                 principalFrame.BtnXat.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ae) {
-                        System.out.println("Recargant llista usuaris connectats");
+                        try {
+                            System.out.println("Recargant llista usuaris connectats");
+                            
+                            out.writeInt("actualitzarConnexions".getBytes().length);
+                            out.write("actualitzarConnexions".getBytes());
+                            
+                            ObjectInputStream ins = new ObjectInputStream(socket.getInputStream());
+        
+                            ArrayList<String> datos = (ArrayList<String>) ins.readObject();
+                            System.out.println("Datos recibidos: " + datos);
+                            
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(ClientSocketStream.class.getName()).log(Level.SEVERE, null, ex);
+                        }
 
                     }
                 }); 
                 
                 while (true) {
+                    
                     if (in.available() > 0) {
                         new RebreMissatges(socket).start();
-                        System.out.println("he entrat");
+                        System.out.println("he entrat enviar missatge");
                     }
 
                     Thread.sleep(100);
@@ -174,12 +195,21 @@ public class ClientSocketStream {
             System.out.println("rebo missatges");
             
             try {
+                totalUsuarisBBDD = dades.Connexio.obtenirLlistatUsuaris();
                 
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 
                 byte[] bytesMissatge = new byte[in.readInt()];
                 in.readFully(bytesMissatge);
-                System.out.println("Missatge rebut: " + new String(bytesMissatge));
+                String missatge = new String(bytesMissatge).trim();
+                
+                System.out.println("Missatge rebut: " + missatge);
+                
+                if (missatge.equals("novaConnexio") || totalUsuarisBBDD.contains(missatge)) {
+                    new RebreEstatConnexions(socket, missatge).start();
+                    System.out.println("he entrat enviar missatge");
+                    return;
+                }
                 
                 byte[] bytesUsuariRemitent = new byte[in.readInt()];
                 in.readFully(bytesUsuariRemitent);
@@ -198,6 +228,39 @@ public class ClientSocketStream {
             } catch (IOException ex) {
                 ex.printStackTrace();
             } 
+        }
+    }
+    
+    static class RebreEstatConnexions extends Thread {
+        private Socket socket;
+        private String usuariConnectat;
+        
+        public RebreEstatConnexions(Socket socket, String usuariConnectat) {
+           this.socket = socket;
+           this.usuariConnectat = usuariConnectat;
+        }
+
+        public void run() {
+
+            try {
+                System.out.println("rebo estat ");
+            
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+
+//                byte[] bytesNouUsuariConnectat = new byte[in.readInt()];
+//                in.readFully(bytesNouUsuariConnectat);
+//                String nouUsuariConnectat = new String(bytesNouUsuariConnectat).trim();
+//                System.out.println("usuari " + nouUsuariConnectat);
+
+                String sala = principalFrame.chat.chat_Title.getUserName();
+                
+                if (sala.equals("Grup")) {
+                    PublicEvent.getInstance().getEventChat().userConnected(usuariConnectat);
+                }
+                
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }   
 }

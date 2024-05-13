@@ -4,6 +4,7 @@ package dades;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -54,10 +55,14 @@ public class ServidorSocketStream {
                 Usuari u = new Usuari (usuari, newSocket, clauPublicaClient);
                 clientsConnectats.add(u);
                 
-//                if (clientsConnectats.size() > 1) {
-//                    new EnviarMissatgeUsuariConnectat(clientsConnectats, u).start();
-//                    new EnviarMissatgeUsuariDesconnectat(clientsConnectats, u).start();
-//                }
+                if (clientsConnectats.size() > 1) {
+                    String missatgeUsuariConnectat = "novaConnexio";
+                    out.writeInt(missatgeUsuariConnectat.getBytes().length);
+                    out.write(missatgeUsuariConnectat.getBytes());
+                    System.out.println(missatgeUsuariConnectat + " he entrat");
+                    new EnviarMissatgeUsuariConnectat(clientsConnectats, u).start();
+                    //new EnviarMissatgeUsuariDesconnectat(clientsConnectats, u).start();
+                }
                 
                 System.out.println("Actualment hi ha connectats els usuaris següents:");
                 for (Usuari client : clientsConnectats) {
@@ -90,11 +95,17 @@ public class ServidorSocketStream {
             
             for (Usuari client : clientsConnectats) {
                 try {
-                    DataOutputStream out = new DataOutputStream(client.getSocket().getOutputStream());
                     
-                    String missatgeUsuariConnectat = "S'ha connectat l'usuari " + client.getUsuari() + ".";
-                    out.write(missatgeUsuariConnectat.getBytes());
-                    out.flush();
+                    if (!client.getUsuari().equals(u.getUsuari())) {
+                        DataOutputStream out = new DataOutputStream(client.getSocket().getOutputStream());
+
+                        String missatgeUsuariConnectat = u.getUsuari();
+                        out.writeInt(missatgeUsuariConnectat.getBytes().length);
+                        out.write(missatgeUsuariConnectat.getBytes());
+                        out.flush();
+
+                        System.out.println("he enviat el missatge a tots els clients. Nou usuari connectat: " + u.getUsuari());
+                    }
                     
                 } catch (IOException e) {
                     System.err.println("Error a l'escriure al socket de l'usuari " + client.getUsuari());
@@ -150,6 +161,7 @@ public class ServidorSocketStream {
 
         public void run() {
             try {
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                 DataInputStream in = new DataInputStream(socket.getInputStream());
 
                 //Rebem el missatge del que vol fer
@@ -175,14 +187,14 @@ public class ServidorSocketStream {
                     for (Usuari usuari : clientsConnectats) {
                         try {
                             Socket socketUsuariDesti = usuari.getSocket();
-                            DataOutputStream out = new DataOutputStream(socketUsuariDesti.getOutputStream());
+                            out = new DataOutputStream(socketUsuariDesti.getOutputStream());
 
                             out.writeInt(missatgeClient.length);
                             out.write(missatgeClient);
                             
                             out.writeInt(usuariRemitentBytes.length);
                             out.write(usuariRemitentBytes);
-
+                            
                             out.flush();
                             
                             System.out.println("he enviat el missatge a tots els usuaris: " + new String(missatgeClient));
@@ -210,18 +222,18 @@ public class ServidorSocketStream {
                         if (usuari.getUsuari().equals(usuariDestinatari) || usuari.getUsuari().equals(usuariRemitent)) {
                             try {
                                 Socket socketUsuariDesti = usuari.getSocket();
-                                DataOutputStream out = new DataOutputStream(socketUsuariDesti.getOutputStream());
+                                out = new DataOutputStream(socketUsuariDesti.getOutputStream());
 
                                 out.writeInt(missatgeClient.length);
                                 out.write(missatgeClient);
-
+                                
                                 out.writeInt(usuariRemitentBytes.length);
                                 out.write(usuariRemitentBytes);
-
+                                
                                 out.flush();
 
                                 System.out.println("he enviat el missatge: " + new String(missatgeClient) + " a l'usuari " + usuari.getUsuari());
-                                System.out.println(" hola hola");
+                            
                             } catch (IOException e) {
                                 System.err.println("Error a l'enviar el missatge a l'usuari: " + usuari.getUsuari());
                                 e.printStackTrace();
@@ -230,7 +242,21 @@ public class ServidorSocketStream {
                     }
                     
                     
-                } else if (missatgeOpcio.equals("actualitzarUsuarisConnectats")) {
+                } else if (missatgeOpcio.equals("actualitzarConnexions")) {
+                    
+                    for (Usuari usuari : clientsConnectats) {
+                        try {
+                            Socket socket = usuari.getSocket();
+                            ObjectOutputStream ous = new ObjectOutputStream(socket.getOutputStream());
+
+                            ous.writeObject(clientsConnectats);
+                            System.out.println(clientsConnectats);
+                            
+                        } catch (IOException e) {
+                            System.err.println("Error a l'enviar el missatge a l'usuari: " + usuari.getUsuari());
+                            e.printStackTrace();
+                        }
+                    }
                     
                 } else if (missatgeOpcio.equals("desconnectar")) {
                     
