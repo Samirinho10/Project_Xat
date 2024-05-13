@@ -101,7 +101,7 @@ public class Connexio {
             if (usuariDoc != null) {
                 String id = usuariDoc.getString("_id");
                 String contrasenya = usuariDoc.getString("contrasenya");
-                String estat = usuariDoc.getString("estat");
+                boolean estat = usuariDoc.getBoolean("estat");
                 Socket sc = null;
 
                 return new Usuari(id, contrasenya, estat, sc);

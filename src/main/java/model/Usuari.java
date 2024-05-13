@@ -8,11 +8,11 @@ public class Usuari {
     
     private String usuari;
     private String contrasenya;
-    private String estat; //en línea o desconnectat
+    private boolean estat; //en línea o desconnectat
     private Socket socket;
     private PublicKey clauPublica;
 
-    public Usuari(String usuari, String contrasenya, String estat, Socket socket) {
+    public Usuari(String usuari, String contrasenya, boolean estat, Socket socket) {
         this.usuari = usuari;
         this.contrasenya = contrasenya;
         this.estat = estat;
@@ -49,11 +49,11 @@ public class Usuari {
         this.contrasenya = contrasenya;
     }
 
-    public String getEstat() {
+    public boolean isEstat() {
         return estat;
     }
 
-    public void setEstat(String estat) {
+    public void setEstat(boolean estat) {
         this.estat = estat;
     }
 

@@ -143,28 +143,28 @@ public class ClientSocketStream {
                     }
                 });
 
-                principalFrame.BtnXat.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent ae) {
-                        try {
-                            System.out.println("Recargant llista usuaris connectats");
-                            
-                            out.writeInt("actualitzarConnexions".getBytes().length);
-                            out.write("actualitzarConnexions".getBytes());
-                            
-                            ObjectInputStream ins = new ObjectInputStream(socket.getInputStream());
-        
-                            ArrayList<String> datos = (ArrayList<String>) ins.readObject();
-                            System.out.println("Datos recibidos: " + datos);
-                            
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(ClientSocketStream.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-
-                    }
-                }); 
+//                principalFrame.BtnXat.addActionListener(new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent ae) {
+//                        try {
+//                            System.out.println("Recargant llista usuaris connectats");
+//                            
+//                            out.writeInt("actualitzarConnexions".getBytes().length);
+//                            out.write("actualitzarConnexions".getBytes());
+//                            
+//                            ObjectInputStream ins = new ObjectInputStream(socket.getInputStream());
+//        
+//                            ArrayList<String> datos = (ArrayList<String>) ins.readObject();
+//                            System.out.println("Datos recibidos: " + datos);
+//                            
+//                        } catch (IOException ex) {
+//                            ex.printStackTrace();
+//                        } catch (ClassNotFoundException ex) {
+//                            Logger.getLogger(ClientSocketStream.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//
+//                    }
+//                }); 
                 
                 while (true) {
                     
@@ -246,11 +246,6 @@ public class ClientSocketStream {
                 System.out.println("rebo estat ");
             
                 DataInputStream in = new DataInputStream(socket.getInputStream());
-
-//                byte[] bytesNouUsuariConnectat = new byte[in.readInt()];
-//                in.readFully(bytesNouUsuariConnectat);
-//                String nouUsuariConnectat = new String(bytesNouUsuariConnectat).trim();
-//                System.out.println("usuari " + nouUsuariConnectat);
 
                 String sala = principalFrame.chat.chat_Title.getUserName();
                 
