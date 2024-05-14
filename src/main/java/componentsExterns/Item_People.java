@@ -74,7 +74,7 @@ public class Item_People extends JPanel {
         lb.setRequestFocusEnabled(false);
 
         imageAvatar1.setBorderSize(0);
-        imageAvatar1.setImage(new javax.swing.ImageIcon("profile.png"));
+        imageAvatar1.setImage(new javax.swing.ImageIcon(getClass().getResource("/profile.png")));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

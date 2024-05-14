@@ -1,30 +1,21 @@
 
 package componentsExterns;
 
-import dades.ClientSocketStream;
-import dades.Connexio;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import model.Missatges;
 import model.Usuari;
 import net.miginfocom.swing.MigLayout;
 
 
 public class Chat_Bottom extends javax.swing.JPanel {
 
-    private ClientSocketStream client;
-    
     public static JIMSendTextPane txt;
     public static JButton botoEnviar;
             
@@ -70,31 +61,6 @@ public class Chat_Bottom extends javax.swing.JPanel {
         botoEnviar.setContentAreaFilled(false);
         botoEnviar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         botoEnviar.setIcon(new ImageIcon(getClass().getResource("/send.png")));
-//        botoEnviar.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent ae) {
-//                String text = txt.getText().trim();
-//                String usuariConnectat = ClientSocketStream.txtUsuariConnectat; //agafem l'usuari que ha iniciat sessió
-//                Usuari usuari = Connexio.obtenirUsuariPerId(usuariConnectat);
-//                String sala = "grup";
-//                
-//                Missatges missatge = new Missatges (usuari, sala, text);
-//                
-//                if (!text.equals("")) {
-//                    Connexio.guardarMissatges(missatge);
-//                    PublicEvent.getInstance().getEventChat().sendMessage(text);
-//                    
-//                    //enviar missatge al client
-//                    
-//                    
-//                    txt.setText("");
-//                    txt.grabFocus();
-//                    refresh();
-//                } else {
-//                    txt.grabFocus();
-//                }
-//            }
-//        });
         panel.add(botoEnviar);
         add(panel);
     }

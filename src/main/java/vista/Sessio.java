@@ -14,6 +14,7 @@ public class Sessio extends javax.swing.JFrame {
 
     public Sessio() {
         initComponents();
+        setResizable(false);
     }
     
     @SuppressWarnings("unchecked")

@@ -1,13 +1,9 @@
 
 package componentsExterns;
 
-import model.Missatges;
 import model.Usuari;
-import dades.ClientSocketStream;
 
 public class Chat extends javax.swing.JPanel {
-    
-    private ClientSocketStream client;
 
     public Chat_Body getChat_Body() {
         return chat_Body;

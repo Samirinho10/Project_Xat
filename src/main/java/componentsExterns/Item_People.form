@@ -70,7 +70,7 @@
       <Properties>
         <Property name="borderSize" type="int" value="0"/>
         <Property name="image" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.ImageIcon(&quot;profile.png&quot;)" type="code"/>
+          <Connection code="new javax.swing.ImageIcon(getClass().getResource(&quot;/profile.png&quot;))" type="code"/>
         </Property>
       </Properties>
 

@@ -39,6 +39,8 @@ public class Principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(800, 500));
+        setPreferredSize(new java.awt.Dimension(850, 767));
 
         body.setBackground(new java.awt.Color(255, 255, 255));
         body.setLayout(new java.awt.BorderLayout());
