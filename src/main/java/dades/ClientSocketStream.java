@@ -2,7 +2,7 @@
 package dades;
 
 import static componentsExterns.Chat_Bottom.txt;
-import componentsExterns.PublicEvent;
+import events.PublicEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;

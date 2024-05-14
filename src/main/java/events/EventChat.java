@@ -1,6 +1,5 @@
-package componentsExterns;
+package events;
 
-import model.Missatges;
 import model.Usuari;
 
 public interface EventChat {

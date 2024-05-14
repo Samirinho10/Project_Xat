@@ -119,6 +119,8 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(0, 0, 0))
         );
 
+        chat.setPreferredSize(new java.awt.Dimension(600, 681));
+
         javax.swing.GroupLayout HomeLayout = new javax.swing.GroupLayout(Home);
         Home.setLayout(HomeLayout);
         HomeLayout.setHorizontalGroup(

@@ -1,4 +1,4 @@
-package componentsExterns;
+package events;
 
 public class PublicEvent {
 

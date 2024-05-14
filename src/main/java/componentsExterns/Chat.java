@@ -1,6 +1,8 @@
 
 package componentsExterns;
 
+import events.EventChat;
+import events.PublicEvent;
 import model.Usuari;
 
 public class Chat extends javax.swing.JPanel {
