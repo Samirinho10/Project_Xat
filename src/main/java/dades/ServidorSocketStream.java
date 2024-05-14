@@ -15,8 +15,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Usuari;
 
 public class ServidorSocketStream {
@@ -254,19 +252,19 @@ public class ServidorSocketStream {
                     
                 } else if (missatgeOpcio.equals("actualitzarConnexions")) {
                     
-                    for (Usuari usuari : clientsConnectats) {
-                        try {
-                            Socket socket = usuari.getSocket();
-                            ObjectOutputStream ous = new ObjectOutputStream(socket.getOutputStream());
-
-                            ous.writeObject(clientsConnectats);
-                            System.out.println(clientsConnectats);
-                            
-                        } catch (IOException e) {
-                            System.err.println("Error a l'enviar el missatge a l'usuari: " + usuari.getUsuari());
-                            e.printStackTrace();
-                        }
-                    }
+//                    for (Usuari usuari : clientsConnectats) {
+//                        try {
+//                            Socket socket = usuari.getSocket();
+//                            ObjectOutputStream ous = new ObjectOutputStream(socket.getOutputStream());
+//
+//                            ous.writeObject(clientsConnectats);
+//                            System.out.println(clientsConnectats);
+//                            
+//                        } catch (IOException e) {
+//                            System.err.println("Error a l'enviar el missatge a l'usuari: " + usuari.getUsuari());
+//                            e.printStackTrace();
+//                        }
+//                    }
                     
                 } else if (missatgeOpcio.equals("desconnectar")) {
                     
@@ -280,6 +278,4 @@ public class ServidorSocketStream {
         }
     }   
 }
-
-//beritja.cicles@gmail.com
 

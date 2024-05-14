@@ -4,7 +4,6 @@ package componentsExterns;
 import java.awt.Color;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class Chat_Left extends javax.swing.JLayeredPane {
 

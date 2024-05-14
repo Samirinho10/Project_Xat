@@ -1,8 +1,6 @@
 
 package componentsExterns;
 
-import model.Usuari;
-
 
 public class Chat_UsuariConnectat extends javax.swing.JLayeredPane {
 

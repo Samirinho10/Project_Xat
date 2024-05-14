@@ -1,9 +1,6 @@
 
 package componentsExterns;
 
-import model.Usuari;
-
-
 public class Chat_UsuariDesconnectat extends javax.swing.JLayeredPane {
 
     public Chat_UsuariDesconnectat() {
@@ -22,13 +19,13 @@ public class Chat_UsuariDesconnectat extends javax.swing.JLayeredPane {
         line1 = new componentsExterns.Line();
         line2 = new componentsExterns.Line();
 
-        lblDesconn.setForeground(new java.awt.Color(191, 191, 191));
+        lblDesconn.setForeground(new java.awt.Color(255, 153, 153));
         lblDesconn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblDesconn.setText("UsuariX s'ha desconnectat");
 
-        line1.setForeground(new java.awt.Color(191, 191, 191));
+        line1.setForeground(new java.awt.Color(255, 153, 153));
 
-        line2.setForeground(new java.awt.Color(191, 191, 191));
+        line2.setForeground(new java.awt.Color(255, 153, 153));
 
         setLayer(lblDesconn, javax.swing.JLayeredPane.DEFAULT_LAYER);
         setLayer(line1, javax.swing.JLayeredPane.DEFAULT_LAYER);

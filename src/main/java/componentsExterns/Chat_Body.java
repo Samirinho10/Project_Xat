@@ -6,7 +6,6 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.time.LocalTime;
 import javax.swing.JScrollBar;
-import model.Usuari;
 import net.miginfocom.swing.MigLayout;
 
 public class Chat_Body extends javax.swing.JPanel {

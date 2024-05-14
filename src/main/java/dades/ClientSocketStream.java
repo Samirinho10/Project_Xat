@@ -158,7 +158,7 @@ public class ClientSocketStream {
                             Calendar selectedDate = (Calendar) evt.getNewValue();
                             
                             Date dataInput = selectedDate.getTime();
-                            System.out.println("Fecha seleccionada: " + dataInput);
+                            System.out.println("Data seleccionada: " + dataInput);
                             
                             List<Missatges> llistaMissatges = dades.Connexio.obtenirMissatgesPerData(dataInput);
                             

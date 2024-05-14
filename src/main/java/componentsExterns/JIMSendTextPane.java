@@ -59,7 +59,6 @@ public class JIMSendTextPane extends JTextPane {
                 }
             }
 
-            //default to text display
             return new LabelView(elem);
         }
     }
@@ -83,8 +82,6 @@ public class JIMSendTextPane extends JTextPane {
         }
     }
 
-    //this category
-    //Constructor
     public JIMSendTextPane() {
         super();
         this.setEditorKit(new WarpEditorKit());
