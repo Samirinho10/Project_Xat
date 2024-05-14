@@ -19,6 +19,14 @@ public class Missatges {
         this.missatge = missatge;
         this.data = LocalDateTime.now();
     }
+    
+    public Missatges(Usuari idUsuari, String idSala, String missatge, LocalDateTime data) {
+        this.idMissatge = new ObjectId();
+        this.idUsuari = idUsuari;
+        this.idSala = idSala;
+        this.missatge = missatge;
+        this.data = data;
+    }
 
     public ObjectId getIdMissatge() {
         return idMissatge;

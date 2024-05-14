@@ -4,6 +4,7 @@ import java.awt.Adjustable;
 import java.awt.Color;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.time.LocalTime;
 import javax.swing.JScrollBar;
 import model.Usuari;
 import net.miginfocom.swing.MigLayout;
@@ -21,9 +22,11 @@ public class Chat_Body extends javax.swing.JPanel {
         sp.getVerticalScrollBar().setBackground(Color.WHITE);
     }
 
-    public void addItemLeft(String text, String usuari) {
+    public void addItemLeft(String text, String usuari, LocalTime hora) {
         Chat_Left item = new Chat_Left();
         item.setText(text);
+        item.setText(text);
+        item.setTime(hora);
         item.setUserProfile(usuari);
         body.add(item, "wrap, w 100::80%");
         //  ::80% set max with 80%
@@ -31,9 +34,10 @@ public class Chat_Body extends javax.swing.JPanel {
         body.revalidate();
     }
 
-    public void addItemRight(String text) {
+    public void addItemRight(String text, LocalTime hora) {
         Chat_Right item = new Chat_Right();
         item.setText(text);
+        item.setTime(hora);
         body.add(item, "wrap, al right, w 100::80%");
         //  ::80% set max with 80%
         body.repaint();
@@ -121,6 +125,20 @@ public class Chat_Body extends javax.swing.JPanel {
         };
         verticalBar.addAdjustmentListener(downScroller);
     }
+    
+    public void scrollToTop() {
+        JScrollBar verticalBar = sp.getVerticalScrollBar();
+        AdjustmentListener upScroller = new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                Adjustable adjustable = e.getAdjustable();
+                adjustable.setValue(adjustable.getMinimum());
+                verticalBar.removeAdjustmentListener(this);
+            }
+        };
+        verticalBar.addAdjustmentListener(upScroller);
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel body;

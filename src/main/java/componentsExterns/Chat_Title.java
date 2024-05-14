@@ -37,12 +37,16 @@ public class Chat_Title extends javax.swing.JPanel {
         return lblUsuari.getText();
     }
     
+    public String getEstat() {
+        return lblStatus.getText();
+    }
+    
     private void estatActiu() {
         lblStatus.setText("En línea");
         lblStatus.setForeground(new java.awt.Color(40, 147, 59));
     } 
     
-    private void setEstatText(String text) {
+    public void setEstatText(String text) {
         lblStatus.setText(text);
         lblStatus.setForeground(new java.awt.Color(160, 160, 160));
     } 

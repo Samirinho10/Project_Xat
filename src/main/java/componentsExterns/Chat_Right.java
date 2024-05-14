@@ -15,12 +15,14 @@ public class Chat_Right extends javax.swing.JLayeredPane {
     public void setText(String text) {
         txt.setText(text);
         
-        LocalTime horaActual = LocalTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
-        String horaFormatejada = horaActual.format(formatter);
-        txt.setTime(horaFormatejada);
-        
         txt.seen();
+    }
+    
+    public void setTime(LocalTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        String horaFormatejada = time.format(formatter);
+        
+        txt.setTime(horaFormatejada);
     }
 
     @SuppressWarnings("unchecked")

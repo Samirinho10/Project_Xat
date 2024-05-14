@@ -18,18 +18,21 @@ import vista.Principal;
 import vista.Sessio;
 import static componentsExterns.Chat_Bottom.botoEnviar;
 import static dades.Connexio.obtenirUsuariPerId;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class ClientSocketStream {
     public static String txtUsuariConnectat;
     public static Principal principalFrame;
     public static List<String> totalUsuarisBBDD;
-
+    
     public static String getTxtUsuariConnectat() {
         return txtUsuariConnectat;
     }
@@ -84,10 +87,11 @@ public class ClientSocketStream {
                             String text = txt.getText().trim();
                             Usuari usuari = Connexio.obtenirUsuariPerId(txtUsuariConnectat);
                             String sala = principalFrame.chat.chat_Title.getUserName();
+                            String estat = principalFrame.chat.chat_Title.getEstat();
 
                             Missatges missatge = new Missatges(usuari, sala, text);
 
-                            if (missatge.getIdSala().equals("Grup")) {
+                            if (missatge.getIdSala().equals("Grup") && !estat.equals("Historial")) {
                                 if (!text.equals("")) {
                                     System.out.println("hola ho guardo a la base de dades");
                                     
@@ -143,28 +147,44 @@ public class ClientSocketStream {
                     }
                 });
 
-//                principalFrame.BtnXat.addActionListener(new ActionListener() {
-//                    @Override
-//                    public void actionPerformed(ActionEvent ae) {
-//                        try {
-//                            System.out.println("Recargant llista usuaris connectats");
-//                            
-//                            out.writeInt("actualitzarConnexions".getBytes().length);
-//                            out.write("actualitzarConnexions".getBytes());
-//                            
-//                            ObjectInputStream ins = new ObjectInputStream(socket.getInputStream());
-//        
-//                            ArrayList<String> datos = (ArrayList<String>) ins.readObject();
-//                            System.out.println("Datos recibidos: " + datos);
-//                            
-//                        } catch (IOException ex) {
-//                            ex.printStackTrace();
-//                        } catch (ClassNotFoundException ex) {
-//                            Logger.getLogger(ClientSocketStream.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//
-//                    }
-//                }); 
+                //mostrar historial de missatges grupals
+                Principal.calendari.addPropertyChangeListener(new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt) {
+                        if (evt.getPropertyName().equals("calendar")) {
+                            //Netegem el contingut
+                            principalFrame.chat.chat_Body.clearChat();
+                                    
+                            Calendar selectedDate = (Calendar) evt.getNewValue();
+                            
+                            Date dataInput = selectedDate.getTime();
+                            System.out.println("Fecha seleccionada: " + dataInput);
+                            
+                            List<Missatges> llistaMissatges = dades.Connexio.obtenirMissatgesPerData(dataInput);
+                            
+                            System.out.println("llista size: " + llistaMissatges.size());
+                            
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                            String dataFormatejadaToString = formatter.format(dataInput);
+                            principalFrame.chat.chat_Body.addData(dataFormatejadaToString);
+                            
+                            for (Missatges missatge : llistaMissatges) {
+                                Usuari usuari = missatge.getIdUsuari();
+                                String missatgeContingut = missatge.getMissatge();
+                                
+                                LocalDateTime dataMissatge = missatge.getData();
+                                LocalTime horaMissatge = dataMissatge.toLocalTime();
+
+                                if (usuari.getUsuari().equals(txtUsuariConnectat)) {
+                                    PublicEvent.getInstance().getEventChat().sendMessage(missatgeContingut, horaMissatge);
+                                } else {
+                                    PublicEvent.getInstance().getEventChat().receiveMessage(missatgeContingut, usuari, horaMissatge);
+                                }
+                            }
+                        }
+                    }
+                
+                });
                 
                 while (true) {
                     
@@ -193,6 +213,8 @@ public class ClientSocketStream {
 
         public void run() {
             System.out.println("rebo missatges");
+            String sala = principalFrame.chat.chat_Title.getUserName();
+            String estat = principalFrame.chat.chat_Title.getEstat();
             
             try {
                 totalUsuarisBBDD = dades.Connexio.obtenirLlistatUsuaris();
@@ -218,9 +240,9 @@ public class ClientSocketStream {
                 Usuari u = obtenirUsuariPerId(new String(bytesUsuariRemitent));
                 
                 if (u.getUsuari().equals(txtUsuariConnectat)) {
-                    PublicEvent.getInstance().getEventChat().sendMessage(new String(bytesMissatge));
+                    PublicEvent.getInstance().getEventChat().sendMessage(new String(bytesMissatge), LocalTime.now());
                 } else {
-                    PublicEvent.getInstance().getEventChat().receiveMessage(new String(bytesMissatge), u);
+                    PublicEvent.getInstance().getEventChat().receiveMessage(new String(bytesMissatge), u, LocalTime.now());
                 }
                 
                 new RebreMissatges(socket).start();
@@ -248,8 +270,9 @@ public class ClientSocketStream {
                 DataInputStream in = new DataInputStream(socket.getInputStream());
 
                 String sala = principalFrame.chat.chat_Title.getUserName();
+                String estat = principalFrame.chat.chat_Title.getEstat();
                 
-                if (sala.equals("Grup")) {
+                if (sala.equals("Grup") && !estat.equals("Historial")) {
                     PublicEvent.getInstance().getEventChat().userConnected(usuariConnectat);
                 }
                 

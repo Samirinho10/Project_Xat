@@ -6,9 +6,18 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gte;
+import static com.mongodb.client.model.Filters.lt;
 import java.net.Socket;
 import java.security.MessageDigest;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import model.Missatges;
 import model.Usuari;
@@ -175,11 +184,37 @@ public class Connexio {
         
         return false;
     }
+    
+    public static List<Missatges> obtenirMissatgesPerData(Date data) {
+        List<Missatges> missatgesPerData = new ArrayList<>();
+
+        try {
+            LocalDateTime startOfDay = LocalDateTime.ofInstant(data.toInstant(), ZoneId.systemDefault()).toLocalDate().atStartOfDay();
+            LocalDateTime endOfDay = LocalDateTime.ofInstant(data.toInstant(), ZoneId.systemDefault()).toLocalDate().atTime(LocalTime.MAX);
+
+            Date startDate = java.sql.Timestamp.valueOf(startOfDay);
+            Date endDate = java.sql.Timestamp.valueOf(endOfDay);
+
+            FindIterable<Document> cursor = missatges.find(and(gte("data", startDate), lt("data", endDate)));
+
+            for (Document doc : cursor) {
+                String idUsuari = doc.get("idUsuari", Document.class).getString("_id");
+                Usuari usuari = obtenirUsuariPerId(idUsuari);
+                
+                String idSala = doc.getString("idSala");
+                String missatge = doc.getString("missatge");
+                LocalDateTime dataMissatge = doc.getDate("data").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+                Missatges missatgeObj = new Missatges(usuari, idSala, missatge, dataMissatge);
+                missatgesPerData.add(missatgeObj);
+            }
+        } catch (Exception e) {
+            System.err.println("Error en obtenir els missatges en la data especificada: " + e);
+        }
+        return missatgesPerData;
+    }
 
 
-    
-    
- 
     //encriptar Contrasenya (hash)
     public static String hashContrasenya(String contrasenya) {
         try {

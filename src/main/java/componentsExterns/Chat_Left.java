@@ -4,6 +4,7 @@ package componentsExterns;
 import java.awt.Color;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Chat_Left extends javax.swing.JLayeredPane {
 
@@ -17,11 +18,13 @@ public class Chat_Left extends javax.swing.JLayeredPane {
     }
 
     public void setText(String text) {
-        txt.setText(text);
-        
-        LocalTime horaActual = LocalTime.now();
+        txt.setText(text); 
+    }
+    
+    public void setTime(LocalTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
-        String horaFormatejada = horaActual.format(formatter);
+        String horaFormatejada = time.format(formatter);
+        
         txt.setTime(horaFormatejada);
     }
 

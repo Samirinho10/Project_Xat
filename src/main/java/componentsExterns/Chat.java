@@ -3,6 +3,7 @@ package componentsExterns;
 
 import events.EventChat;
 import events.PublicEvent;
+import java.time.LocalTime;
 import model.Usuari;
 
 public class Chat extends javax.swing.JPanel {
@@ -22,12 +23,12 @@ public class Chat extends javax.swing.JPanel {
     
     private void init(){
         PublicEvent.getInstance().addEventChat(new EventChat() {
-            public void sendMessage(String missatge) {
-                chat_Body.addItemRight(missatge);
+            public void sendMessage(String missatge, LocalTime hora) {
+                chat_Body.addItemRight(missatge, hora);
             }
 
-            public void receiveMessage(String missatge, Usuari usuari) {
-                chat_Body.addItemLeft(missatge, usuari.getUsuari());
+            public void receiveMessage(String missatge, Usuari usuari, LocalTime hora) {
+                chat_Body.addItemLeft(missatge, usuari.getUsuari(), hora);
             }
 
             @Override
@@ -48,10 +49,6 @@ public class Chat extends javax.swing.JPanel {
         chat_Bottom.setUsuari(usuari);
         chat_Body.clearChat();
     }
-
-//    public void updateUser(Usuari usuari) {
-//        chatTitle.updateUser(usuari);
-//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
