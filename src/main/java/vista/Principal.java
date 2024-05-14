@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.BoxLayout;
-import dades.ClientSocketStream;
 import static java.lang.System.exit;
 import model.Usuari;
 
@@ -32,6 +31,7 @@ public class Principal extends javax.swing.JFrame {
         BtnHistorial = new componentsExterns.MenuButton();
         sp = new javax.swing.JScrollPane();
         menuList = new javax.swing.JLayeredPane();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
         chat = new componentsExterns.Chat();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -89,15 +89,23 @@ public class Principal extends javax.swing.JFrame {
 
         menuList.setBackground(new java.awt.Color(242, 242, 242));
 
+        jCalendar1.setMaximumSize(new java.awt.Dimension(214, 150));
+        jCalendar1.setMinimumSize(new java.awt.Dimension(214, 150));
+        jCalendar1.setPreferredSize(new java.awt.Dimension(214, 150));
+
+        menuList.setLayer(jCalendar1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout menuListLayout = new javax.swing.GroupLayout(menuList);
         menuList.setLayout(menuListLayout);
         menuListLayout.setHorizontalGroup(
             menuListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         menuListLayout.setVerticalGroup(
             menuListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 950, Short.MAX_VALUE)
+            .addGroup(menuListLayout.createSequentialGroup()
+                .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 853, Short.MAX_VALUE))
         );
 
         sp.setViewportView(menuList);
@@ -106,7 +114,7 @@ public class Principal extends javax.swing.JFrame {
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(MenuTop, javax.swing.GroupLayout.PREFERRED_SIZE, 210, Short.MAX_VALUE)
+            .addComponent(MenuTop, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(sp)
         );
         MenuLayout.setVerticalGroup(
@@ -129,7 +137,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(Menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chat, javax.swing.GroupLayout.DEFAULT_SIZE, 977, Short.MAX_VALUE)
+                .addComponent(chat, javax.swing.GroupLayout.DEFAULT_SIZE, 973, Short.MAX_VALUE)
                 .addContainerGap())
         );
         HomeLayout.setVerticalGroup(
@@ -298,12 +306,9 @@ public class Principal extends javax.swing.JFrame {
     private void mostrarHistorial() {
         menuList.removeAll();
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
-
-//        for (int i = 0; i < 20; i++) {
-//            Item_People itemPeople = new Item_People("Missatge " + i);
-//            menuList.add(itemPeople);
-//            itemPeople.setBounds(0, i * 50, 216, 50);
-//        }
+        
+        menuList.add(jCalendar1);
+        
         refreshMenuList();
     }
 
@@ -321,6 +326,7 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JLayeredPane MenuTop;
     public javax.swing.JLayeredPane body;
     public componentsExterns.Chat chat;
+    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem4;
