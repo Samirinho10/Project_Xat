@@ -26,6 +26,7 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.crypto.Cipher;
 
 
 public class ClientSocketStream {
@@ -280,5 +281,41 @@ public class ClientSocketStream {
                 ex.printStackTrace();
             }
         }
-    }   
+    } 
+    
+    public static byte[] encriptarMissatge(String missatge, KeyPair parellDeClaus){
+        try {
+            Cipher rsaCipher = Cipher.getInstance("RSA");
+            rsaCipher.init(Cipher.ENCRYPT_MODE, parellDeClaus.getPrivate());
+            byte[] mXif = rsaCipher.doFinal(missatge.getBytes());
+            
+            System.out.println(mXif);
+            
+            return mXif;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
+    public static String desencriptarMissatge(byte[] missatgeXifrat, KeyPair parellDeClaus){
+
+        try {
+            Cipher rsaCipher = Cipher.getInstance("RSA");
+            rsaCipher.init(Cipher.DECRYPT_MODE, parellDeClaus.getPublic());
+            byte[] mDes = rsaCipher.doFinal(missatgeXifrat);
+            
+            String missatgeDesxifrat = new String(mDes);
+            System.out.println(mDes);
+            
+            return missatgeDesxifrat;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return null;  
+    }  
 }
