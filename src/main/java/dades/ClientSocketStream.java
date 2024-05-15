@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.crypto.Cipher;
+import javax.swing.JOptionPane;
 
 
 public class ClientSocketStream {
@@ -90,6 +91,14 @@ public class ClientSocketStream {
                             String sala = principalFrame.chat.chat_Title.getUserName();
                             String estat = principalFrame.chat.chat_Title.getEstat();
 
+                            if (estat.equals("Estàs en línia")) {
+                                JOptionPane.showMessageDialog(null, "Hola " + txtUsuariConnectat + ". "
+                                        + "Selecciona una sala per començar a xatejar.", 
+                                "Informació", JOptionPane.INFORMATION_MESSAGE);
+                                
+                                return;
+                            }
+                            
                             Missatges missatge = new Missatges(usuari, sala, text);
 
                             if (missatge.getIdSala().equals("Grup") && !estat.equals("Historial")) {
@@ -152,6 +161,8 @@ public class ClientSocketStream {
                 Principal.calendari.addPropertyChangeListener(new PropertyChangeListener() {
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
+                        String sala = principalFrame.chat.chat_Title.getUserName();
+                        
                         if (evt.getPropertyName().equals("calendar")) {
                             //Netegem el contingut
                             principalFrame.chat.chat_Body.clearChat();
@@ -176,7 +187,7 @@ public class ClientSocketStream {
                                 LocalDateTime dataMissatge = missatge.getData();
                                 LocalTime horaMissatge = dataMissatge.toLocalTime();
 
-                                if (usuari.getUsuari().equals(txtUsuariConnectat)) {
+                                if (usuari.getUsuari().equals(txtUsuariConnectat) && !sala.equals("Benvingut/da")) {
                                     PublicEvent.getInstance().getEventChat().sendMessage(missatgeContingut, horaMissatge);
                                 } else {
                                     PublicEvent.getInstance().getEventChat().receiveMessage(missatgeContingut, usuari, horaMissatge);
