@@ -198,6 +198,28 @@ public class ClientSocketStream {
                 
                 });
                 
+                //Que fer si em desconnecto?
+                Runtime.getRuntime().addShutdownHook(new Thread() {
+                    @Override
+                    public void run() {
+                        
+                        try {
+                            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                            
+                            out.writeInt("desconnectar".getBytes().length);
+                            out.write("desconnectar".getBytes());
+                            
+                            out.writeInt(txtUsuariConnectat.getBytes().length);
+                            out.write(txtUsuariConnectat.getBytes());
+                            
+                            System.out.println("mhe desconnectat");
+                            
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                });
+                
                 while (true) {
                     
                     if (in.available() > 0) {
@@ -207,6 +229,8 @@ public class ClientSocketStream {
 
                     Thread.sleep(100);
                 } 
+                
+                
             }
 
         } catch(IOException | InterruptedException e) {
@@ -225,8 +249,6 @@ public class ClientSocketStream {
 
         public void run() {
             System.out.println("rebo missatges");
-            String sala = principalFrame.chat.chat_Title.getUserName();
-            String estat = principalFrame.chat.chat_Title.getEstat();
             
             try {
                 totalUsuarisBBDD = dades.Connexio.obtenirLlistatUsuaris();
@@ -240,8 +262,28 @@ public class ClientSocketStream {
                 System.out.println("Missatge rebut: " + missatge);
                 
                 if (missatge.equals("novaConnexio") || totalUsuarisBBDD.contains(missatge)) {
-                    new RebreEstatConnexions(socket, missatge).start();
-                    System.out.println("he entrat enviar missatge");
+                    String sala = principalFrame.chat.chat_Title.getUserName();
+                    String estat = principalFrame.chat.chat_Title.getEstat();
+
+                    if (sala.equals("Grup") && !estat.equals("Historial")) {
+                        PublicEvent.getInstance().getEventChat().userConnected(missatge);
+                    }
+                    
+                    return;
+                }
+                
+                if (missatge.equals("DesconneccioUsuaris")) {
+                    String sala = principalFrame.chat.chat_Title.getUserName();
+                    String estat = principalFrame.chat.chat_Title.getEstat();
+                    
+                    byte[] bytesUsuariDesconnectat = new byte[in.readInt()];
+                    in.readFully(bytesUsuariDesconnectat);
+                    String usuariDesconnectat = new String(bytesUsuariDesconnectat).trim();
+
+                    if (sala.equals("Grup") && !estat.equals("Historial")) {
+                        PublicEvent.getInstance().getEventChat().userDisconnected(usuariDesconnectat);
+                    }
+                    
                     return;
                 }
                 
@@ -264,35 +306,6 @@ public class ClientSocketStream {
             } 
         }
     }
-    
-    static class RebreEstatConnexions extends Thread {
-        private Socket socket;
-        private String usuariConnectat;
-        
-        public RebreEstatConnexions(Socket socket, String usuariConnectat) {
-           this.socket = socket;
-           this.usuariConnectat = usuariConnectat;
-        }
-
-        public void run() {
-
-            try {
-                System.out.println("rebo estat ");
-            
-                DataInputStream in = new DataInputStream(socket.getInputStream());
-
-                String sala = principalFrame.chat.chat_Title.getUserName();
-                String estat = principalFrame.chat.chat_Title.getEstat();
-                
-                if (sala.equals("Grup") && !estat.equals("Historial")) {
-                    PublicEvent.getInstance().getEventChat().userConnected(usuariConnectat);
-                }
-                
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    } 
     
     public static byte[] encriptarMissatge(String missatge, KeyPair parellDeClaus){
         try {

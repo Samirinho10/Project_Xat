@@ -63,7 +63,6 @@ public class ServidorSocketStream {
                     out.write(missatgeUsuariConnectat.getBytes());
                     System.out.println(missatgeUsuariConnectat + " he entrat");
                     new EnviarMissatgeUsuariConnectat(clientsConnectats, u).start();
-                    //new EnviarMissatgeUsuariDesconnectat(clientsConnectats, u).start();
                 }
                 
                 System.out.println("Actualment hi ha connectats els usuaris següents:");
@@ -118,6 +117,7 @@ public class ServidorSocketStream {
                 } catch (IOException e) {
                     System.err.println("Error a l'escriure al socket de l'usuari " + client.getUsuari());
                     clientsConnectats.remove(client);
+                    dades.Connexio.posarUsuariInactiu(client.getUsuari());
                     
                     e.printStackTrace();
                 }
@@ -150,6 +150,7 @@ public class ServidorSocketStream {
                 } catch (IOException e) {
                     System.err.println("Error a l'escriure al socket de l'usuari " + client.getUsuari());
                     clientsConnectats.remove(client);
+                    dades.Connexio.posarUsuariInactiu(client.getUsuari());
                     
                     e.printStackTrace();
                 }
@@ -177,6 +178,45 @@ public class ServidorSocketStream {
                 in.readFully(missatgeOpcioBytes);
                 String missatgeOpcio = new String(missatgeOpcioBytes).trim();
                 System.out.println(missatgeOpcio);
+                
+                if (missatgeOpcio.equals("desconnectar")) {
+                    
+                    System.out.println("He entrat actualitzarConnexions");
+                    
+                    byte[] usuaridesconnectatBytes = new byte[in.readInt()];
+                    in.readFully(usuaridesconnectatBytes);
+                    String usuaridesconnectat = new String(usuaridesconnectatBytes).trim();
+                    
+                    //treiem l'usuari que s'ha desconnectat de la llista i actualitzem l'estat a la BBDD
+                    clientsConnectats.remove(usuaridesconnectat);
+                    dades.Connexio.posarUsuariInactiu(usuaridesconnectat);
+                    
+                    
+                    for (Usuari usuari : clientsConnectats) {
+                        
+                        if (!usuari.getUsuari().equals(usuaridesconnectat)) {
+                            try {
+                                Socket socketUsuariDesti = usuari.getSocket();
+                                out = new DataOutputStream(socketUsuariDesti.getOutputStream());
+
+                                out.writeInt("DesconneccioUsuaris".getBytes().length);
+                                out.write("DesconneccioUsuaris".getBytes());
+                                
+                                out.writeInt(usuaridesconnectat.getBytes().length);
+                                out.write(usuaridesconnectat.getBytes());
+                                
+                                out.flush();
+
+                                System.out.println("he enviat el missatge de l'usuari desconnectat");
+                            
+                            } catch (IOException e) {
+                                System.err.println("Error a l'enviar el missatge a l'usuari: " + usuari.getUsuari());
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    
+                }
                 
                 //Rebem el contingut del missatge que l'usuari vol enviar
                 byte[] missatgeClient = new byte[in.readInt()];
@@ -248,26 +288,6 @@ public class ServidorSocketStream {
                             }
                         }
                     }
-                    
-                    
-                } else if (missatgeOpcio.equals("actualitzarConnexions")) {
-                    
-//                    for (Usuari usuari : clientsConnectats) {
-//                        try {
-//                            Socket socket = usuari.getSocket();
-//                            ObjectOutputStream ous = new ObjectOutputStream(socket.getOutputStream());
-//
-//                            ous.writeObject(clientsConnectats);
-//                            System.out.println(clientsConnectats);
-//                            
-//                        } catch (IOException e) {
-//                            System.err.println("Error a l'enviar el missatge a l'usuari: " + usuari.getUsuari());
-//                            e.printStackTrace();
-//                        }
-//                    }
-                    
-                } else if (missatgeOpcio.equals("desconnectar")) {
-                    
                 }
                 
                 new RebreMissatges(clientsConnectats, socket).start();

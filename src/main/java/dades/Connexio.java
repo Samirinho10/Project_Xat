@@ -151,6 +151,18 @@ public class Connexio {
         }
     }
     
+    public static void posarUsuariInactiu(String nomUsuari) {
+        try {
+            Document filter = new Document("_id", nomUsuari);
+            Document update = new Document("$set", new Document("estat", false));
+            usuaris.updateOne(filter, update);
+            System.out.println("S'ha posat l'usuari " + nomUsuari + " a estat desconnectat.");
+        } catch (Exception e) {
+            System.err.println("Error en actualitzar l'estat de l'usuari " + nomUsuari + ": " + e);
+        }
+    }
+
+    
     public static void posarTotsElsUsuarisInactius() {
         try {
             Document update = new Document("$set", new Document("estat", false));
