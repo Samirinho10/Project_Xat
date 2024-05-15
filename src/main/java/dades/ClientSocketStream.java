@@ -174,11 +174,15 @@ public class ClientSocketStream {
                             
                             List<Missatges> llistaMissatges = dades.Connexio.obtenirMissatgesPerData(dataInput);
                             
-                            System.out.println("llista size: " + llistaMissatges.size());
-                            
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                             String dataFormatejadaToString = formatter.format(dataInput);
                             principalFrame.chat.chat_Body.addData(dataFormatejadaToString);
+                            
+                            System.out.println("llista size: " + llistaMissatges.size());
+                            if (llistaMissatges.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "No hi ha missatges del dia " + dataFormatejadaToString + " a la base de dades.", 
+                                "Informació", JOptionPane.INFORMATION_MESSAGE);
+                            }
                             
                             for (Missatges missatge : llistaMissatges) {
                                 Usuari usuari = missatge.getIdUsuari();
@@ -195,7 +199,6 @@ public class ClientSocketStream {
                             }
                         }
                     }
-                
                 });
                 
                 //Que fer si em desconnecto?
@@ -228,9 +231,7 @@ public class ClientSocketStream {
                     }
 
                     Thread.sleep(100);
-                } 
-                
-                
+                }  
             }
 
         } catch(IOException | InterruptedException e) {

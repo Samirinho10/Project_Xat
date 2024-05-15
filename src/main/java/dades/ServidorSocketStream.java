@@ -188,7 +188,8 @@ public class ServidorSocketStream {
                     String usuaridesconnectat = new String(usuaridesconnectatBytes).trim();
                     
                     //treiem l'usuari que s'ha desconnectat de la llista i actualitzem l'estat a la BBDD
-                    clientsConnectats.remove(usuaridesconnectat);
+                    Usuari uDesconnectat = dades.Connexio.obtenirUsuariPerId(usuaridesconnectat);
+                    clientsConnectats.remove(uDesconnectat);
                     dades.Connexio.posarUsuariInactiu(usuaridesconnectat);
                     
                     
@@ -215,7 +216,6 @@ public class ServidorSocketStream {
                             }
                         }
                     }
-                    
                 }
                 
                 //Rebem el contingut del missatge que l'usuari vol enviar
