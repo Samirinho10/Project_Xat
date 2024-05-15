@@ -24,7 +24,6 @@ public class Chat_Body extends javax.swing.JPanel {
     public void addItemLeft(String text, String usuari, LocalTime hora) {
         Chat_Left item = new Chat_Left();
         item.setText(text);
-        item.setText(text);
         item.setTime(hora);
         item.setUserProfile(usuari);
         body.add(item, "wrap, w 100::80%");
@@ -35,8 +34,8 @@ public class Chat_Body extends javax.swing.JPanel {
 
     public void addItemRight(String text, LocalTime hora) {
         Chat_Right item = new Chat_Right();
-        item.setText(text);
         item.setTime(hora);
+        item.setText(text);
         body.add(item, "wrap, al right, w 100::80%");
         //  ::80% set max with 80%
         body.repaint();
