@@ -45,13 +45,8 @@ public class Chat_Bottom extends javax.swing.JPanel {
         txt = new JIMSendTextPane();
         txt.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent ke) {
-                if (ke.getKeyCode() == KeyEvent.VK_TAB) {
-                    //ke.consume(); // Evitar que el evento de tabulación propague
-                    botoEnviar.requestFocusInWindow();
-                }
-                
-                refresh(); 
+            public void keyTyped(KeyEvent ke) {
+                refresh();
             }
         });
         txt.setHintText("Escriu un missatge aquí ...");
