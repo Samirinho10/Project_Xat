@@ -294,7 +294,7 @@ public class ClientSocketStream {
                 
                 Usuari u = obtenirUsuariPerId(new String(bytesUsuariRemitent));
                 
-                if (u.getUsuari().equals(txtUsuariConnectat)) {
+                if (u != null && u.getUsuari().equals(txtUsuariConnectat)) {
                     PublicEvent.getInstance().getEventChat().sendMessage(new String(bytesMissatge), LocalTime.now());
                 } else {
                     PublicEvent.getInstance().getEventChat().receiveMessage(new String(bytesMissatge), u, LocalTime.now());

@@ -2,8 +2,12 @@
 package componentsExterns;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FocusTraversalPolicy;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
@@ -41,8 +45,13 @@ public class Chat_Bottom extends javax.swing.JPanel {
         txt = new JIMSendTextPane();
         txt.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent ke) {
-                refresh();
+            public void keyPressed(KeyEvent ke) {
+                if (ke.getKeyCode() == KeyEvent.VK_TAB) {
+                    //ke.consume(); // Evitar que el evento de tabulación propague
+                    botoEnviar.requestFocusInWindow();
+                }
+                
+                refresh(); 
             }
         });
         txt.setHintText("Escriu un missatge aquí ...");

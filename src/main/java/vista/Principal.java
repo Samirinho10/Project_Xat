@@ -39,12 +39,15 @@ public class Principal extends javax.swing.JFrame {
         chat = new componentsExterns.Chat();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItemSortir = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItemPrincipal = new javax.swing.JMenuItem();
+        jMenuItemGrup = new javax.swing.JMenuItem();
+        jMenuItemHistorial = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(800, 500));
-        setPreferredSize(new java.awt.Dimension(800, 767));
 
         body.setBackground(new java.awt.Color(255, 255, 255));
         body.setLayout(new java.awt.BorderLayout());
@@ -152,16 +155,47 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem4.setText("Sortir");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemSortir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemSortir.setText("Sortir");
+        jMenuItemSortir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jMenuItemSortirActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem4);
+        jMenu1.add(jMenuItemSortir);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Vés a");
+
+        jMenuItemPrincipal.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemPrincipal.setText("Principal");
+        jMenuItemPrincipal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPrincipalActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItemPrincipal);
+
+        jMenuItemGrup.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemGrup.setText("Xats Grupals");
+        jMenuItemGrup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemGrupActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItemGrup);
+
+        jMenuItemHistorial.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemHistorial.setText("Historial");
+        jMenuItemHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemHistorialActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItemHistorial);
+
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -179,6 +213,10 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jMenuItemSortirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSortirActionPerformed
+        exit(0);
+    }//GEN-LAST:event_jMenuItemSortirActionPerformed
+
     private void BtnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHistorialActionPerformed
         if (!BtnHistorial.isSelected()) {
             BtnXat.setSelected(false);
@@ -193,7 +231,7 @@ public class Principal extends javax.swing.JFrame {
             BtnXat.setSelected(false);
             BtnUsuaris.setSelected(true);
             BtnHistorial.setSelected(false);
-            mostratGrup();
+            mostrarGrup();
         }
     }//GEN-LAST:event_BtnUsuarisActionPerformed
 
@@ -206,9 +244,32 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BtnXatActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        exit(0);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    private void jMenuItemGrupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGrupActionPerformed
+        if (!BtnUsuaris.isSelected()) {
+            BtnXat.setSelected(false);
+            BtnUsuaris.setSelected(true);
+            BtnHistorial.setSelected(false);
+            mostrarGrup();
+        }
+    }//GEN-LAST:event_jMenuItemGrupActionPerformed
+
+    private void jMenuItemPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPrincipalActionPerformed
+        if (!BtnXat.isSelected()) {
+            BtnXat.setSelected(true);
+            BtnUsuaris.setSelected(false);
+            BtnHistorial.setSelected(false);
+            mostrarXat();
+        }
+    }//GEN-LAST:event_jMenuItemPrincipalActionPerformed
+
+    private void jMenuItemHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHistorialActionPerformed
+        if (!BtnHistorial.isSelected()) {
+            BtnXat.setSelected(false);
+            BtnUsuaris.setSelected(false);
+            BtnHistorial.setSelected(true);
+            mostrarHistorial();
+        }
+    }//GEN-LAST:event_jMenuItemHistorialActionPerformed
 
     private void init() {
         //editar scroll bar
@@ -266,7 +327,7 @@ public class Principal extends javax.swing.JFrame {
         refreshMenuList();
     }
 
-    private void mostratGrup() {
+    private void mostrarGrup() {
         menuList.removeAll();
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
         for (int i = 0; i < 1; i++) {
@@ -331,8 +392,12 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JLayeredPane body;
     public componentsExterns.Chat chat;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItemGrup;
+    private javax.swing.JMenuItem jMenuItemHistorial;
+    private javax.swing.JMenuItem jMenuItemPrincipal;
+    private javax.swing.JMenuItem jMenuItemSortir;
     private javax.swing.JLayeredPane menuList;
     private javax.swing.JScrollPane sp;
     // End of variables declaration//GEN-END:variables

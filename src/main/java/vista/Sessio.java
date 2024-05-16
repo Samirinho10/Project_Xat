@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.border.AbstractBorder;
 import model.Usuari;
@@ -103,6 +104,11 @@ public class Sessio extends javax.swing.JFrame {
         acces.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 accesActionPerformed(evt);
+            }
+        });
+        acces.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                accesKeyPressed(evt);
             }
         });
 
@@ -225,6 +231,12 @@ public class Sessio extends javax.swing.JFrame {
     private void accesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesActionPerformed
         iniciSessio();
     }//GEN-LAST:event_accesActionPerformed
+
+    private void accesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_accesKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            iniciSessio();
+        }
+    }//GEN-LAST:event_accesKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Login;
