@@ -20,13 +20,19 @@ import static componentsExterns.Chat_Bottom.botoEnviar;
 import static dades.Connexio.obtenirUsuariPerId;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.security.InvalidKeyException;
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
 
@@ -81,6 +87,23 @@ public class ClientSocketStream {
                 //Enviem la nostra clau pública
                 out.write(bytesClauPublica);
                 
+                //Rebre clau simètrica xifrada amb la pública del client
+                //Llegir del socol i desxifrar amb la meva privada 
+                byte[] bytesClave = new byte[in.readInt()];
+                in.readFully(bytesClave);
+                System.out.println("Rebuda clau simètrica xifrada...");
+
+                // Desxifrar clau simètrica
+                Cipher cifradorRSA = Cipher.getInstance("RSA");
+                cifradorRSA.init(Cipher.DECRYPT_MODE, clauRSA.getPrivate());
+
+                byte[] bytesClauAES = cifradorRSA.doFinal(bytesClave);
+                System.out.println("Ja tenim la clau simètrica AES");
+
+                // Regenerar la clau AES per poder xifrar i desxifrar
+                Key clauAES = new SecretKeySpec(bytesClauAES, 0, bytesClauAES.length, "AES");
+                System.out.println("clauAES: " + clauAES);
+                
                 //Action listener de quan envio un missatge
                 botoEnviar.addActionListener(new ActionListener() {
                     @Override
@@ -105,15 +128,15 @@ public class ClientSocketStream {
                                 if (!text.equals("")) {
                                     System.out.println("hola ho guardo a la base de dades");
                                     
-                                    out.writeInt("MissatgeGrupal".getBytes().length);
-                                    out.write("MissatgeGrupal".getBytes());
+                                    out.writeInt(encriptarMissatge("MissatgeGrupal", clauAES).length);
+                                    out.write(encriptarMissatge("MissatgeGrupal", clauAES));
                                     
-                                    out.writeInt(text.getBytes().length);
-                                    out.write(text.getBytes());
+                                    out.writeInt(encriptarMissatge(text, clauAES).length);
+                                    out.write(encriptarMissatge(text, clauAES));
                                     
                                     String usuariRemitent = txtUsuariConnectat;
-                                    out.writeInt(usuariRemitent.getBytes().length);
-                                    out.write(usuariRemitent.getBytes());
+                                    out.writeInt(encriptarMissatge(usuariRemitent, clauAES).length);
+                                    out.write(encriptarMissatge(usuariRemitent, clauAES));
                                     
                                     Connexio.guardarMissatges(missatge);
 
@@ -127,19 +150,19 @@ public class ClientSocketStream {
                                 System.out.println("he entrat al else de missatge privat");
                                 
                                 if (!text.equals("")) {
-                                    out.writeInt("MissatgePrivat".getBytes().length);
-                                    out.write("MissatgePrivat".getBytes());
+                                    out.writeInt(encriptarMissatge("MissatgePrivat", clauAES).length);
+                                    out.write(encriptarMissatge("MissatgePrivat", clauAES));
                                     
-                                    out.writeInt(text.getBytes().length);
-                                    out.write(text.getBytes());
+                                    out.writeInt(encriptarMissatge(text, clauAES).length);
+                                    out.write(encriptarMissatge(text, clauAES));
                                     
                                     String URemitent = txtUsuariConnectat;
-                                    out.writeInt(URemitent.getBytes().length);
-                                    out.write(URemitent.getBytes());
+                                    out.writeInt(encriptarMissatge(URemitent, clauAES).length);
+                                    out.write(encriptarMissatge(URemitent, clauAES));
 
                                     Usuari Udestinatari = obtenirUsuariPerId(sala);
-                                    out.writeInt(Udestinatari.getUsuari().getBytes().length);
-                                    out.write(Udestinatari.getUsuari().getBytes());
+                                    out.writeInt(encriptarMissatge(Udestinatari.getUsuari(), clauAES).length);
+                                    out.write(encriptarMissatge(Udestinatari.getUsuari(), clauAES));
                                     
                                     txt.setText("");
                                     txt.grabFocus();
@@ -209,11 +232,11 @@ public class ClientSocketStream {
                         try {
                             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                             
-                            out.writeInt("desconnectar".getBytes().length);
-                            out.write("desconnectar".getBytes());
+                            out.writeInt(encriptarMissatge("desconnectar", clauAES).length);
+                            out.write(encriptarMissatge("desconnectar", clauAES));
                             
-                            out.writeInt(txtUsuariConnectat.getBytes().length);
-                            out.write(txtUsuariConnectat.getBytes());
+                            out.writeInt(encriptarMissatge(txtUsuariConnectat, clauAES).length);
+                            out.write(encriptarMissatge(txtUsuariConnectat, clauAES));
                             
                             System.out.println("mhe desconnectat");
                             
@@ -226,7 +249,7 @@ public class ClientSocketStream {
                 while (true) {
                     
                     if (in.available() > 0) {
-                        new RebreMissatges(socket).start();
+                        new RebreMissatges(socket, clauAES).start();
                         System.out.println("he entrat enviar missatge");
                     }
 
@@ -234,18 +257,18 @@ public class ClientSocketStream {
                 }  
             }
 
-        } catch(IOException | InterruptedException e) {
+        } catch(IOException | InterruptedException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
         }
     }
     
     static class RebreMissatges extends Thread {
         private Socket socket;
+        private Key clauAES;
         
-        public RebreMissatges(Socket socket) {
+        public RebreMissatges(Socket socket, Key clauAES) {
            this.socket = socket;
+           this.clauAES = clauAES;
         }
 
         public void run() {
@@ -258,7 +281,7 @@ public class ClientSocketStream {
                 
                 byte[] bytesMissatge = new byte[in.readInt()];
                 in.readFully(bytesMissatge);
-                String missatge = new String(bytesMissatge).trim();
+                String missatge = desencriptarMissatge(bytesMissatge, clauAES).trim();
                 
                 System.out.println("Missatge rebut: " + missatge);
                 
@@ -279,7 +302,7 @@ public class ClientSocketStream {
                     
                     byte[] bytesUsuariDesconnectat = new byte[in.readInt()];
                     in.readFully(bytesUsuariDesconnectat);
-                    String usuariDesconnectat = new String(bytesUsuariDesconnectat).trim();
+                    String usuariDesconnectat = desencriptarMissatge(bytesUsuariDesconnectat, clauAES).trim();
 
                     if (sala.equals("Grup") && !estat.equals("Historial")) {
                         PublicEvent.getInstance().getEventChat().userDisconnected(usuariDesconnectat);
@@ -290,17 +313,18 @@ public class ClientSocketStream {
                 
                 byte[] bytesUsuariRemitent = new byte[in.readInt()];
                 in.readFully(bytesUsuariRemitent);
-                System.out.println("Missatge rebut de: " + new String(bytesUsuariRemitent));
+                String usuariRemitent = desencriptarMissatge(bytesUsuariRemitent, clauAES).trim();
+                System.out.println("Missatge rebut de: " + usuariRemitent);
                 
-                Usuari u = obtenirUsuariPerId(new String(bytesUsuariRemitent));
+                Usuari u = obtenirUsuariPerId(usuariRemitent);
                 
                 if (u != null && u.getUsuari().equals(txtUsuariConnectat)) {
-                    PublicEvent.getInstance().getEventChat().sendMessage(new String(bytesMissatge), LocalTime.now());
-                } else {
-                    PublicEvent.getInstance().getEventChat().receiveMessage(new String(bytesMissatge), u, LocalTime.now());
+                    PublicEvent.getInstance().getEventChat().sendMessage(missatge, LocalTime.now());
+                } else if (u != null) {
+                    PublicEvent.getInstance().getEventChat().receiveMessage(missatge, u, LocalTime.now());
                 }
                 
-                new RebreMissatges(socket).start();
+                new RebreMissatges(socket, clauAES).start();
                 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -308,15 +332,15 @@ public class ClientSocketStream {
         }
     }
     
-    public static byte[] encriptarMissatge(String missatge, KeyPair parellDeClaus){
+    public static byte[] encriptarMissatge(String missatge, Key clauAES){
         try {
-            Cipher rsaCipher = Cipher.getInstance("RSA");
-            rsaCipher.init(Cipher.ENCRYPT_MODE, parellDeClaus.getPrivate());
-            byte[] mXif = rsaCipher.doFinal(missatge.getBytes());
+            Cipher cifradorAES = Cipher.getInstance("AES");
+            cifradorAES.init(Cipher.ENCRYPT_MODE, clauAES);
+            byte[] mXifAES = cifradorAES.doFinal(missatge.getBytes());
             
-            System.out.println(mXif);
+            System.out.println(mXifAES);
             
-            return mXif;
+            return mXifAES;
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -325,15 +349,15 @@ public class ClientSocketStream {
         return null;
     }
     
-    public static String desencriptarMissatge(byte[] missatgeXifrat, KeyPair parellDeClaus){
+    public static String desencriptarMissatge(byte[] missatgeXifAES, Key clauAES){
 
         try {
-            Cipher rsaCipher = Cipher.getInstance("RSA");
-            rsaCipher.init(Cipher.DECRYPT_MODE, parellDeClaus.getPublic());
-            byte[] mDes = rsaCipher.doFinal(missatgeXifrat);
+            Cipher AESCipher = Cipher.getInstance("AES");
+            AESCipher.init(Cipher.DECRYPT_MODE, clauAES);
+            byte[] missatgeDesxif = AESCipher.doFinal(missatgeXifAES);
             
-            String missatgeDesxifrat = new String(mDes);
-            System.out.println(mDes);
+            String missatgeDesxifrat = new String(missatgeDesxif);
+            System.out.println("\nMissatge desxifrat: " + missatgeDesxifrat);
             
             return missatgeDesxifrat;
             

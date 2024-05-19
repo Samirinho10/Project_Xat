@@ -33,7 +33,7 @@ public class Xat {
 
             // Donar al servidor algun temps per iniciar-se
             try {
-                Thread.sleep(1000);  // Ajusta aquest retard segons sigui necessari
+                Thread.sleep(2000);  // Ajusta aquest retard segons sigui necessari
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
