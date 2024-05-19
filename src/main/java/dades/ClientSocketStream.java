@@ -18,6 +18,8 @@ import vista.Principal;
 import vista.Sessio;
 import static componentsExterns.Chat_Bottom.botoEnviar;
 import static dades.Connexio.obtenirUsuariPerId;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.security.InvalidKeyException;
@@ -102,84 +104,28 @@ public class ClientSocketStream {
 
                 // Regenerar la clau AES per poder xifrar i desxifrar
                 Key clauAES = new SecretKeySpec(bytesClauAES, 0, bytesClauAES.length, "AES");
-                System.out.println("clauAES: " + clauAES);
                 
-                //Action listener de quan envio un missatge
+                
+                //Action listener per enviar un missatge al fer clic al botoEnviar
                 botoEnviar.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ae) {
-                        try {
-                            String text = txt.getText().trim();
-                            Usuari usuari = Connexio.obtenirUsuariPerId(txtUsuariConnectat);
-                            String sala = principalFrame.chat.chat_Title.getUserName();
-                            String estat = principalFrame.chat.chat_Title.getEstat();
-
-                            if (estat.equals("Estàs en línia")) {
-                                JOptionPane.showMessageDialog(null, "Hola " + txtUsuariConnectat + ". "
-                                        + "Selecciona una sala per començar a xatejar.", 
-                                "Informació", JOptionPane.INFORMATION_MESSAGE);
-                                
-                                return;
-                            }
-                            
-                            Missatges missatge = new Missatges(usuari, sala, text);
-
-                            if (missatge.getIdSala().equals("Grup") && !estat.equals("Historial")) {
-                                if (!text.equals("")) {
-                                    System.out.println("hola ho guardo a la base de dades");
-                                    
-                                    out.writeInt(encriptarMissatge("MissatgeGrupal", clauAES).length);
-                                    out.write(encriptarMissatge("MissatgeGrupal", clauAES));
-                                    
-                                    out.writeInt(encriptarMissatge(text, clauAES).length);
-                                    out.write(encriptarMissatge(text, clauAES));
-                                    
-                                    String usuariRemitent = txtUsuariConnectat;
-                                    out.writeInt(encriptarMissatge(usuariRemitent, clauAES).length);
-                                    out.write(encriptarMissatge(usuariRemitent, clauAES));
-                                    
-                                    Connexio.guardarMissatges(missatge);
-
-                                    txt.setText("");
-                                    txt.grabFocus();
-
-                                } else {
-                                    txt.grabFocus();
-                                }
-                            } else {
-                                System.out.println("he entrat al else de missatge privat");
-                                
-                                if (!text.equals("")) {
-                                    out.writeInt(encriptarMissatge("MissatgePrivat", clauAES).length);
-                                    out.write(encriptarMissatge("MissatgePrivat", clauAES));
-                                    
-                                    out.writeInt(encriptarMissatge(text, clauAES).length);
-                                    out.write(encriptarMissatge(text, clauAES));
-                                    
-                                    String URemitent = txtUsuariConnectat;
-                                    out.writeInt(encriptarMissatge(URemitent, clauAES).length);
-                                    out.write(encriptarMissatge(URemitent, clauAES));
-
-                                    Usuari Udestinatari = obtenirUsuariPerId(sala);
-                                    out.writeInt(encriptarMissatge(Udestinatari.getUsuari(), clauAES).length);
-                                    out.write(encriptarMissatge(Udestinatari.getUsuari(), clauAES));
-                                    
-                                    txt.setText("");
-                                    txt.grabFocus();
-                                    
-                                    System.out.println("soc el client, ho he fet tot");
-
-                                } else {
-                                    txt.grabFocus();
-                                }
-                            }
-                            
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
+                        enviarMissatge(out, clauAES);
                     }
                 });
 
+                //Key Listener per enviar el missatge al premer la tecla INTRO
+                txt.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent ke) {
+                        if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+                            ke.consume(); //eviitem que es faci un salt de línia
+                            enviarMissatge(out, clauAES);
+                        }
+                    }
+                });
+                
+                
                 //mostrar historial de missatges grupals
                 Principal.calendari.addPropertyChangeListener(new PropertyChangeListener() {
                     @Override
@@ -331,6 +277,80 @@ public class ClientSocketStream {
             } 
         }
     }
+    
+    private static void enviarMissatge(DataOutputStream out, Key clauAES) {
+        
+        try {
+            String text = txt.getText().trim();
+            Usuari usuari = Connexio.obtenirUsuariPerId(txtUsuariConnectat);
+            String sala = principalFrame.chat.chat_Title.getUserName();
+            String estat = principalFrame.chat.chat_Title.getEstat();
+
+            if (estat.equals("Estàs en línia")) {
+                JOptionPane.showMessageDialog(null, "Hola " + txtUsuariConnectat + ". "
+                        + "Selecciona una sala per començar a xatejar.", 
+                "Informació", JOptionPane.INFORMATION_MESSAGE);
+
+                return;
+            }
+
+            Missatges missatge = new Missatges(usuari, sala, text);
+
+            if (missatge.getIdSala().equals("Grup") && !estat.equals("Historial")) {
+                if (!text.equals("")) {
+                    System.out.println("hola ho guardo a la base de dades");
+
+                    out.writeInt(encriptarMissatge("MissatgeGrupal", clauAES).length);
+                    out.write(encriptarMissatge("MissatgeGrupal", clauAES));
+
+                    out.writeInt(encriptarMissatge(text, clauAES).length);
+                    out.write(encriptarMissatge(text, clauAES));
+
+                    String usuariRemitent = txtUsuariConnectat;
+                    out.writeInt(encriptarMissatge(usuariRemitent, clauAES).length);
+                    out.write(encriptarMissatge(usuariRemitent, clauAES));
+
+                    Connexio.guardarMissatges(missatge);
+
+                    txt.setText("");
+                    txt.grabFocus();
+
+                } else {
+                    txt.grabFocus();
+                }
+            } else {
+                System.out.println("he entrat al else de missatge privat");
+
+                if (!text.equals("")) {
+                    out.writeInt(encriptarMissatge("MissatgePrivat", clauAES).length);
+                    out.write(encriptarMissatge("MissatgePrivat", clauAES));
+
+                    out.writeInt(encriptarMissatge(text, clauAES).length);
+                    out.write(encriptarMissatge(text, clauAES));
+
+                    String URemitent = txtUsuariConnectat;
+                    out.writeInt(encriptarMissatge(URemitent, clauAES).length);
+                    out.write(encriptarMissatge(URemitent, clauAES));
+
+                    Usuari Udestinatari = obtenirUsuariPerId(sala);
+                    out.writeInt(encriptarMissatge(Udestinatari.getUsuari(), clauAES).length);
+                    out.write(encriptarMissatge(Udestinatari.getUsuari(), clauAES));
+
+                    txt.setText("");
+                    txt.grabFocus();
+
+                    System.out.println("soc el client, ho he fet tot");
+
+                } else {
+                    txt.grabFocus();
+                }
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     
     public static byte[] encriptarMissatge(String missatge, Key clauAES){
         try {

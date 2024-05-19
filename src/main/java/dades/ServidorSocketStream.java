@@ -35,7 +35,6 @@ public class ServidorSocketStream {
             System.out.println("Generem clau simètrica...");
             KeyGenerator generador = KeyGenerator.getInstance("AES");
             Key clauAES = generador.generateKey();
-            System.out.println("clauAES: " + clauAES);
             
             System.out.println("Creant Socket servidor");
             ServerSocket serverSocket = new ServerSocket();
@@ -302,8 +301,8 @@ public class ServidorSocketStream {
                                 out.writeInt(encriptarMissatge(missatgeClient, clauAES).length);
                                 out.write(encriptarMissatge(missatgeClient, clauAES));
                                 
-                                out.writeInt(encriptarMissatge(new String(usuariRemitentBytes), clauAES).length);
-                                out.write(encriptarMissatge(new String(usuariRemitentBytes), clauAES));
+                                out.writeInt(encriptarMissatge(usuariRemitent, clauAES).length);
+                                out.write(encriptarMissatge(usuariRemitent, clauAES));
                                 
                                 out.flush();
 
