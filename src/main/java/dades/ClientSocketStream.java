@@ -119,7 +119,7 @@ public class ClientSocketStream {
                     @Override
                     public void keyPressed(KeyEvent ke) {
                         if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
-                            ke.consume(); //eviitem que es faci un salt de línia
+                            ke.consume(); //evitem que es faci un salt de línia
                             enviarMissatge(out, clauAES);
                         }
                     }
