@@ -1,4 +1,4 @@
-        package com.mycompany.xat;
+package com.mycompany.xat;
 
 import dades.ClientSocketStream;
 
