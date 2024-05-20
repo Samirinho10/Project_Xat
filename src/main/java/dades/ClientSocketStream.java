@@ -47,13 +47,13 @@ public class ClientSocketStream {
         return txtUsuariConnectat;
     }
     
-    public static void main(String[] args){
+    public static void main(String[] args){     
     
         try {
             
             // Creant Socket client per connectar-nos al servidor
-            String host = "localhost";
-            int port = 5050;
+            String host = "192.168.1.92";
+            int port = 7878;
 
             Socket socket = new Socket(host, port);
 
