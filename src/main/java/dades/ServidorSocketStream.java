@@ -4,6 +4,7 @@ package dades;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,7 +39,7 @@ public class ServidorSocketStream {
             
             System.out.println("Creant Socket servidor");
             ServerSocket serverSocket = new ServerSocket();
-            InetSocketAddress addr = new InetSocketAddress("192.168.1.92", 7878);
+            InetSocketAddress addr = new InetSocketAddress(InetAddress.getLocalHost(), 7878);
             serverSocket.bind(addr);
             
             while (true) {

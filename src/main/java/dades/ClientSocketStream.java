@@ -52,7 +52,7 @@ public class ClientSocketStream {
         try {
             
             // Creant Socket client per connectar-nos al servidor
-            String host = "192.168.1.92";
+            String host = "192.168.1.71";
             int port = 7878;
 
             Socket socket = new Socket(host, port);
