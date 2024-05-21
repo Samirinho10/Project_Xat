@@ -45,28 +45,11 @@ public class ClientSocketStream {
     public static String getTxtUsuariConnectat() {
         return txtUsuariConnectat;
     }
-<<<<<<< Updated upstream
-    
-    public static void main(String[] args){     
-    
-        try {
-            
-=======
 
     public static void main(String[] args) {
 
         try {
-            // Creant Socket client per connectar-nos al servidor
-            String host = "192.168.1.72";
-            int port = 7878;
-
-            Socket socket = new Socket(host, port);
-
-            // Obtenim els fluxos d'entrada i sortida del socket
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-
->>>>>>> Stashed changes
+            
             //Generar doble clau	    
             KeyPairGenerator generadorRSA = KeyPairGenerator.getInstance("RSA");
             KeyPair clauRSA = generadorRSA.genKeyPair();

@@ -38,11 +38,7 @@ public class ServidorSocketStream {
 
             System.out.println("Creant Socket servidor");
             ServerSocket serverSocket = new ServerSocket();
-<<<<<<< Updated upstream
             InetSocketAddress addr = new InetSocketAddress(InetAddress.getLocalHost(), 7878);
-=======
-            InetSocketAddress addr = new InetSocketAddress("192.168.1.72", 7878);
->>>>>>> Stashed changes
             serverSocket.bind(addr);
 
             while (true) {
