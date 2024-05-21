@@ -1,4 +1,3 @@
-
 package dades;
 
 import static componentsExterns.Chat_Bottom.txt;
@@ -37,20 +36,37 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
-
 public class ClientSocketStream {
+
     public static String txtUsuariConnectat;
     public static Principal principalFrame;
     public static List<String> totalUsuarisBBDD;
-    
+
     public static String getTxtUsuariConnectat() {
         return txtUsuariConnectat;
     }
+<<<<<<< Updated upstream
     
     public static void main(String[] args){     
     
         try {
             
+=======
+
+    public static void main(String[] args) {
+
+        try {
+            // Creant Socket client per connectar-nos al servidor
+            String host = "192.168.1.72";
+            int port = 7878;
+
+            Socket socket = new Socket(host, port);
+
+            // Obtenim els fluxos d'entrada i sortida del socket
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+
+>>>>>>> Stashed changes
             //Generar doble clau	    
             KeyPairGenerator generadorRSA = KeyPairGenerator.getInstance("RSA");
             KeyPair clauRSA = generadorRSA.genKeyPair();
@@ -105,8 +121,7 @@ public class ClientSocketStream {
 
                 // Regenerar la clau AES per poder xifrar i desxifrar
                 Key clauAES = new SecretKeySpec(bytesClauAES, 0, bytesClauAES.length, "AES");
-                
-                
+
                 //Action listener per enviar un missatge al fer clic al botoEnviar
                 botoEnviar.addActionListener(new ActionListener() {
                     @Override
@@ -125,39 +140,38 @@ public class ClientSocketStream {
                         }
                     }
                 });
-                
-                
+
                 //mostrar historial de missatges grupals
                 Principal.calendari.addPropertyChangeListener(new PropertyChangeListener() {
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
                         String sala = principalFrame.chat.chat_Title.getUserName();
-                        
+
                         if (evt.getPropertyName().equals("calendar")) {
                             //Netegem el contingut
                             principalFrame.chat.chat_Body.clearChat();
-                                    
+
                             Calendar selectedDate = (Calendar) evt.getNewValue();
-                            
+
                             Date dataInput = selectedDate.getTime();
                             System.out.println("Data seleccionada: " + dataInput);
-                            
+
                             List<Missatges> llistaMissatges = dades.Connexio.obtenirMissatgesPerData(dataInput);
-                            
+
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                             String dataFormatejadaToString = formatter.format(dataInput);
                             principalFrame.chat.chat_Body.addData(dataFormatejadaToString);
-                            
+
                             System.out.println("llista size: " + llistaMissatges.size());
                             if (llistaMissatges.isEmpty()) {
-                                JOptionPane.showMessageDialog(null, "No hi ha missatges del dia " + dataFormatejadaToString + " a la base de dades.", 
-                                "Informació", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "No hi ha missatges del dia " + dataFormatejadaToString + " a la base de dades.",
+                                        "Informació", JOptionPane.INFORMATION_MESSAGE);
                             }
-                            
+
                             for (Missatges missatge : llistaMissatges) {
                                 Usuari usuari = missatge.getIdUsuari();
                                 String missatgeContingut = missatge.getMissatge();
-                                
+
                                 LocalDateTime dataMissatge = missatge.getData();
                                 LocalTime horaMissatge = dataMissatge.toLocalTime();
 
@@ -170,68 +184,69 @@ public class ClientSocketStream {
                         }
                     }
                 });
-                
+
                 //Que fer si em desconnecto?
                 Runtime.getRuntime().addShutdownHook(new Thread() {
                     @Override
                     public void run() {
-                        
+
                         try {
                             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                            
+
                             out.writeInt(encriptarMissatge("desconnectar", clauAES).length);
                             out.write(encriptarMissatge("desconnectar", clauAES));
-                            
+
                             out.writeInt(encriptarMissatge(txtUsuariConnectat, clauAES).length);
                             out.write(encriptarMissatge(txtUsuariConnectat, clauAES));
-                            
-                            System.out.println("mhe desconnectat");
-                            
+
+                            System.out.println("m'he desconnectat");
+
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
                     }
                 });
-                
+
                 while (true) {
-                    
+
                     if (in.available() > 0) {
                         new RebreMissatges(socket, clauAES).start();
                         System.out.println("he entrat enviar missatge");
                     }
 
                     Thread.sleep(100);
-                }  
+                }
             }
 
-        } catch(IOException | InterruptedException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+        } catch (IOException | InterruptedException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
     }
-    
+
     static class RebreMissatges extends Thread {
+
         private Socket socket;
         private Key clauAES;
-        
+
         public RebreMissatges(Socket socket, Key clauAES) {
-           this.socket = socket;
-           this.clauAES = clauAES;
+            this.socket = socket;
+            this.clauAES = clauAES;
         }
 
         public void run() {
             System.out.println("rebo missatges");
-            
+
             try {
                 totalUsuarisBBDD = dades.Connexio.obtenirLlistatUsuaris();
-                
+
                 DataInputStream in = new DataInputStream(socket.getInputStream());
-                
+
                 byte[] bytesMissatge = new byte[in.readInt()];
                 in.readFully(bytesMissatge);
                 String missatge = desencriptarMissatge(bytesMissatge, clauAES).trim();
-                
+
                 System.out.println("Missatge rebut: " + missatge);
-                
+
                 if (missatge.equals("novaConnexio") || totalUsuarisBBDD.contains(missatge)) {
                     String sala = principalFrame.chat.chat_Title.getUserName();
                     String estat = principalFrame.chat.chat_Title.getEstat();
@@ -239,14 +254,14 @@ public class ClientSocketStream {
                     if (sala.equals("Grup") && !estat.equals("Historial")) {
                         PublicEvent.getInstance().getEventChat().userConnected(missatge);
                     }
-                    
+
                     return;
                 }
-                
+
                 if (missatge.equals("DesconneccioUsuaris")) {
                     String sala = principalFrame.chat.chat_Title.getUserName();
                     String estat = principalFrame.chat.chat_Title.getEstat();
-                    
+
                     byte[] bytesUsuariDesconnectat = new byte[in.readInt()];
                     in.readFully(bytesUsuariDesconnectat);
                     String usuariDesconnectat = desencriptarMissatge(bytesUsuariDesconnectat, clauAES).trim();
@@ -254,33 +269,33 @@ public class ClientSocketStream {
                     if (sala.equals("Grup") && !estat.equals("Historial")) {
                         PublicEvent.getInstance().getEventChat().userDisconnected(usuariDesconnectat);
                     }
-                    
+
                     return;
                 }
-                
+
                 byte[] bytesUsuariRemitent = new byte[in.readInt()];
                 in.readFully(bytesUsuariRemitent);
                 String usuariRemitent = desencriptarMissatge(bytesUsuariRemitent, clauAES).trim();
                 System.out.println("Missatge rebut de: " + usuariRemitent);
-                
+
                 Usuari u = obtenirUsuariPerId(usuariRemitent);
-                
+
                 if (u != null && u.getUsuari().equals(txtUsuariConnectat)) {
                     PublicEvent.getInstance().getEventChat().sendMessage(missatge, LocalTime.now());
                 } else if (u != null) {
                     PublicEvent.getInstance().getEventChat().receiveMessage(missatge, u, LocalTime.now());
                 }
-                
+
                 new RebreMissatges(socket, clauAES).start();
-                
+
             } catch (IOException ex) {
                 ex.printStackTrace();
-            } 
+            }
         }
     }
-    
+
     private static void enviarMissatge(DataOutputStream out, Key clauAES) {
-        
+
         try {
             String text = txt.getText().trim();
             Usuari usuari = Connexio.obtenirUsuariPerId(txtUsuariConnectat);
@@ -289,8 +304,8 @@ public class ClientSocketStream {
 
             if (estat.equals("Estàs en línia")) {
                 JOptionPane.showMessageDialog(null, "Hola " + txtUsuariConnectat + ". "
-                        + "Selecciona una sala per començar a xatejar.", 
-                "Informació", JOptionPane.INFORMATION_MESSAGE);
+                        + "Selecciona una sala per començar a xatejar.",
+                        "Informació", JOptionPane.INFORMATION_MESSAGE);
 
                 return;
             }
@@ -351,41 +366,40 @@ public class ClientSocketStream {
             ex.printStackTrace();
         }
     }
-    
-    
-    public static byte[] encriptarMissatge(String missatge, Key clauAES){
+
+    public static byte[] encriptarMissatge(String missatge, Key clauAES) {
         try {
             Cipher cifradorAES = Cipher.getInstance("AES");
             cifradorAES.init(Cipher.ENCRYPT_MODE, clauAES);
             byte[] mXifAES = cifradorAES.doFinal(missatge.getBytes());
-            
+
             System.out.println(mXifAES);
-            
+
             return mXifAES;
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return null;
     }
-    
-    public static String desencriptarMissatge(byte[] missatgeXifAES, Key clauAES){
+
+    public static String desencriptarMissatge(byte[] missatgeXifAES, Key clauAES) {
 
         try {
             Cipher AESCipher = Cipher.getInstance("AES");
             AESCipher.init(Cipher.DECRYPT_MODE, clauAES);
             byte[] missatgeDesxif = AESCipher.doFinal(missatgeXifAES);
-            
+
             String missatgeDesxifrat = new String(missatgeDesxif);
             System.out.println("\nMissatge desxifrat: " + missatgeDesxifrat);
-            
+
             return missatgeDesxifrat;
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        return null;  
-    }  
+
+        return null;
+    }
 }
