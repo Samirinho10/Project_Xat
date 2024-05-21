@@ -44,6 +44,8 @@ public class Principal extends javax.swing.JFrame {
         jMenuItemPrincipal = new javax.swing.JMenuItem();
         jMenuItemGrup = new javax.swing.JMenuItem();
         jMenuItemHistorial = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -197,6 +199,19 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setText("Configuració");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setText("BBDD");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -270,6 +285,10 @@ public class Principal extends javax.swing.JFrame {
             mostrarHistorial();
         }
     }//GEN-LAST:event_jMenuItemHistorialActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        //Obrir JFrame
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void init() {
         //editar scroll bar
@@ -393,7 +412,9 @@ public class Principal extends javax.swing.JFrame {
     public componentsExterns.Chat chat;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemGrup;
     private javax.swing.JMenuItem jMenuItemHistorial;
     private javax.swing.JMenuItem jMenuItemPrincipal;
