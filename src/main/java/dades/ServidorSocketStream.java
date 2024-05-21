@@ -38,7 +38,8 @@ public class ServidorSocketStream {
 
             System.out.println("Creant Socket servidor");
             ServerSocket serverSocket = new ServerSocket();
-            InetSocketAddress addr = new InetSocketAddress(InetAddress.getLocalHost(), 7878);
+            //InetSocketAddress addr = new InetSocketAddress(InetAddress.getLocalHost(), 7878);
+            InetSocketAddress addr = new InetSocketAddress("localhost", 7878);
             serverSocket.bind(addr);
 
             while (true) {

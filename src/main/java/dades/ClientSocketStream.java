@@ -66,7 +66,8 @@ public class ClientSocketStream {
             }
             
             // Creant Socket client per connectar-nos al servidor
-            String host = sessioFrame.txtServidor.getText();
+            //String host = sessioFrame.txtServidor.getText();
+            String host = "localhost";
             int port = 7878;
 
             Socket socket = new Socket(host, port);
