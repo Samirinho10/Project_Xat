@@ -51,16 +51,6 @@ public class ClientSocketStream {
     
         try {
             
-            // Creant Socket client per connectar-nos al servidor
-            String host = "192.168.1.71";
-            int port = 7878;
-
-            Socket socket = new Socket(host, port);
-
-            // Obtenim els fluxos d'entrada i sortida del socket
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-
             //Generar doble clau	    
             KeyPairGenerator generadorRSA = KeyPairGenerator.getInstance("RSA");
             KeyPair clauRSA = generadorRSA.genKeyPair();
@@ -70,12 +60,23 @@ public class ClientSocketStream {
             // Mostrar pantalla inici de sessió
             Sessio sessioFrame = new Sessio();
             sessioFrame.setVisible(true);
-
+            
             // Esperem a que es tanqui la pantalla per assegurar que l'usuari anota les dades
             while(sessioFrame.isVisible()) {
                 Thread.sleep(100);
             }
+            
+            // Creant Socket client per connectar-nos al servidor
+            String host = sessioFrame.txtServidor.getText();
+            int port = 7878;
 
+            Socket socket = new Socket(host, port);
+
+            // Obtenim els fluxos d'entrada i sortida del socket
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+
+            //Si les credencials són correctes, agafem les dades de l'usuari i obrim la pantalla Principal del xat
             if (sessioFrame.iniciSessio()) {
                 txtUsuariConnectat = sessioFrame.txtUsuari.getText();
                 System.out.println("Soc " + txtUsuariConnectat);

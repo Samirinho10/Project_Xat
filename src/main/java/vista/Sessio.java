@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import javax.swing.JOptionPane;
 import javax.swing.border.AbstractBorder;
 import model.Usuari;
@@ -29,6 +31,8 @@ public class Sessio extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtContrasenya = new javax.swing.JPasswordField();
+        jLabel3 = new javax.swing.JLabel();
+        txtServidor = new javax.swing.JTextField();
         acces = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -63,18 +67,34 @@ public class Sessio extends javax.swing.JFrame {
         txtContrasenya.setBorder(null);
         txtContrasenya.setCaretColor(new java.awt.Color(102, 102, 255));
 
+        jLabel3.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setText("Servidor");
+
+        txtServidor.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        txtServidor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtServidor.setToolTipText("Introdueix l'usuari");
+        txtServidor.setBorder(null);
+        txtServidor.setCaretColor(new java.awt.Color(102, 102, 255));
+        txtServidor.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtUsuari.setMargin(new Insets(5, 20, 5, 5));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(txtUsuari)
             .addComponent(txtContrasenya, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(txtServidor)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel2, jLabel4});
@@ -90,7 +110,11 @@ public class Sessio extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtContrasenya, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtContrasenya, txtUsuari});
@@ -134,8 +158,8 @@ public class Sessio extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(acces, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -151,10 +175,7 @@ public class Sessio extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(Login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(Login, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -192,10 +213,19 @@ public class Sessio extends javax.swing.JFrame {
     public boolean iniciSessio() {
         String usuari = txtUsuari.getText();
         String contrasenya = new String(txtContrasenya.getPassword());
+        String servidor = txtServidor.getText();
         
         Usuari usuariConnectat = new Usuari(usuari, contrasenya);
 
         if (Connexio.verificarCreedencials(usuariConnectat)) {
+            
+            if (!isValidIPAddress(servidor)) {
+                System.out.println(servidor + " no es una dirección IP válida.");
+                JOptionPane.showMessageDialog(null, "La IP del servidor " + servidor + " no és una IP vàlida.", 
+                        "Informació", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
+            
             this.dispose();
             return true;
             
@@ -238,14 +268,26 @@ public class Sessio extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_accesKeyPressed
 
+    public static boolean isValidIPAddress(String ip) {
+        try {
+            InetAddress inet = InetAddress.getByName(ip);
+            return inet.getHostAddress().equals(ip);
+            
+        } catch (UnknownHostException e) {
+            return false;
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Login;
     private javax.swing.JButton acces;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
     public javax.swing.JPasswordField txtContrasenya;
+    public javax.swing.JTextField txtServidor;
     public javax.swing.JTextField txtUsuari;
     // End of variables declaration//GEN-END:variables
 }
