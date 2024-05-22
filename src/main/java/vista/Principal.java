@@ -293,15 +293,12 @@ public class Principal extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         mongo.setVisible(true);
         
-        // Agrega un WindowListener a la ventana 'mongo'
         mongo.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                // Cuando se cierra la ventana, ocúltala sin liberar recursos
                 mongo.setVisible(false);
             }
         });
-
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void init() {

@@ -38,8 +38,7 @@ public class ServidorSocketStream {
 
             System.out.println("Creant Socket servidor");
             ServerSocket serverSocket = new ServerSocket();
-            //InetSocketAddress addr = new InetSocketAddress(InetAddress.getLocalHost(), 7878);
-            InetSocketAddress addr = new InetSocketAddress("localhost", 7878);
+            InetSocketAddress addr = new InetSocketAddress(InetAddress.getLocalHost(), 7878);
             serverSocket.bind(addr);
 
             while (true) {
@@ -134,41 +133,6 @@ public class ServidorSocketStream {
                         out.flush();
 
                         System.out.println("he enviat el missatge a tots els clients. Nou usuari connectat: " + u.getUsuari());
-                    }
-
-                } catch (IOException e) {
-                    System.err.println("Error a l'escriure al socket de l'usuari " + client.getUsuari());
-                    clientsConnectats.remove(client);
-                    dades.Connexio.posarUsuariInactiu(client.getUsuari());
-
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    static class EnviarMissatgeUsuariDesconnectat extends Thread {
-
-        private List<Usuari> clientsConnectats;
-        private Usuari uDesconnectat;
-        private Key clauAES;
-
-        public EnviarMissatgeUsuariDesconnectat(List<Usuari> clientsConnectats, Usuari uDesconnectat, Key clauAES) {
-            this.clientsConnectats = clientsConnectats;
-            this.uDesconnectat = uDesconnectat;
-            this.clauAES = clauAES;
-        }
-
-        public void run() {
-
-            for (Usuari client : clientsConnectats) {
-                try {
-                    if (!clientsConnectats.contains(uDesconnectat)) {
-                        DataOutputStream out = new DataOutputStream(client.getSocket().getOutputStream());
-
-                        String missatgeUsuariDesconnectat = "S'ha desconnectat l'usuari " + client.getUsuari() + ".";
-                        out.write(encriptarMissatge(missatgeUsuariDesconnectat, clauAES));
-                        out.flush();
                     }
 
                 } catch (IOException e) {
