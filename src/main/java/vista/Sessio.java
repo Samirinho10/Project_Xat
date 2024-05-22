@@ -64,6 +64,7 @@ public class Sessio extends javax.swing.JFrame {
         jLabel2.setText("Usuari");
 
         txtContrasenya.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        txtContrasenya.setToolTipText("Introdueix la contrasenya");
         txtContrasenya.setBorder(null);
         txtContrasenya.setCaretColor(new java.awt.Color(102, 102, 255));
 
@@ -73,7 +74,7 @@ public class Sessio extends javax.swing.JFrame {
 
         txtServidor.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         txtServidor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtServidor.setToolTipText("Introdueix l'usuari");
+        txtServidor.setToolTipText("Introdueix la IP del servidor");
         txtServidor.setBorder(null);
         txtServidor.setCaretColor(new java.awt.Color(102, 102, 255));
         txtServidor.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
@@ -124,7 +125,7 @@ public class Sessio extends javax.swing.JFrame {
         acces.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         acces.setForeground(new java.awt.Color(255, 255, 255));
         acces.setText("Accedir");
-        acces.setToolTipText("Registrar usuari");
+        acces.setToolTipText("");
         acces.setBorder(null);
         acces.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
