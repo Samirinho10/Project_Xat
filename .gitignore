@@ -1,7 +1,6 @@
 # Ignorar archivos generados por NetBeans
 /nbproject/
 /build/
-/dist/
 /target/
 
 # Ignorar archivos de configuración de NetBeans
