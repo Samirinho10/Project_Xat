@@ -12,11 +12,15 @@ import model.Usuari;
 import com.toedter.calendar.JCalendar;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import vista.JMongo;
 
 
 public class Principal extends javax.swing.JFrame {
 
     public static JCalendar calendari = new JCalendar();
+    public static JMongo mongo = new JMongo();
     
     public Principal() {
         initComponents();
@@ -287,10 +291,21 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemHistorialActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        //Obrir JFrame
+        mongo.setVisible(true);
+        
+        // Agrega un WindowListener a la ventana 'mongo'
+        mongo.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Cuando se cierra la ventana, ocúltala sin liberar recursos
+                mongo.setVisible(false);
+            }
+        });
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void init() {
+        
         //editar scroll bar
         sp.setVerticalScrollBar(new ScrollBar());
 
