@@ -338,8 +338,6 @@ public class ClientSocketStream {
                     txt.setText("");
                     txt.grabFocus();
 
-                    System.out.println("soc el client, ho he fet tot");
-
                 } else {
                     txt.grabFocus();
                 }
